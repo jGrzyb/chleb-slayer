@@ -173,9 +173,12 @@ MonoBehaviour:
   walkingSpeed: 5
   acceleration: 30
   dashSpeed: 20
-  dashDuration: 0.1
+  dashDuration: 0.15
   dashCooldown: 1
   dashBufferTime: 0.1
+  maxHealth: 1
+  currentHealth: 1
+  damageInvincibilityDuration: 0.5
 --- !u!114 &7799686830840973213
 MonoBehaviour:
   m_ObjectHideFlags: 0
