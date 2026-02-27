@@ -27,20 +27,13 @@ public class EnemyBehaviour : MonoBehaviour
         if (currentTarget != null)
         {
             agent.SetDestination(currentTarget.position);
-            if(currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 0.5f)
-            {
-                Destroy(currentTarget.gameObject);
-                Tower.ActiveTowers.Remove(currentTarget);
-                currentTarget = null;
-            }
         }
     }
     void FindClosestTowerFromList()
     {
-        //List<Transform> towers = Tower.ActiveTowers;
         if (Tower.ActiveTowers.Count == 0)
         {
-            currentTarget = player;
+            SetPlayerAsTarget();
             return;
         }
 
@@ -70,13 +63,25 @@ public class EnemyBehaviour : MonoBehaviour
             Tower.ActiveTowers.Remove(currentTarget);
         }
     }
-
+    public void takeDamage()
+    {
+        if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 0.5f)
+        {
+            Destroy(currentTarget.gameObject);
+            Tower.ActiveTowers.Remove(currentTarget);
+            currentTarget = null;
+        }
+        if (currentTarget.CompareTag("Player"))
+        {
+            //zadaje obra¿enia graczowi
+        }
+    }
     void OnDestroy()
     {
         RemoveSelfFromList();
     }
-    public void SetPlayerAsTarget(Transform playerTransform)
+    public void SetPlayerAsTarget()
     {
-        currentTarget = playerTransform;
+        currentTarget = player;
     }
 }
