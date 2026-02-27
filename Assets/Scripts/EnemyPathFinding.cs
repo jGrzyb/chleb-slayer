@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class EnemyBehaviour : MonoBehaviour
 {
     Transform currentTarget = null;
-    string tagTower = "Tower";
     [SerializeField] Transform player;
     NavMeshAgent agent;
 
@@ -27,6 +26,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (currentTarget != null)
         {
             agent.SetDestination(currentTarget.position);
+            takeDamage();
         }
     }
     void FindClosestTowerFromList()
@@ -63,9 +63,10 @@ public class EnemyBehaviour : MonoBehaviour
             Tower.ActiveTowers.Remove(currentTarget);
         }
     }
+    //narazie w ten spsób, ale potem trzeba uwzglêdniæ system zdrowia i obra¿eñ
     public void takeDamage()
     {
-        if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 0.5f)
+        if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
         {
             Destroy(currentTarget.gameObject);
             Tower.ActiveTowers.Remove(currentTarget);
