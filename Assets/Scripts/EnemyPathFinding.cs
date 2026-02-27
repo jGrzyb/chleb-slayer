@@ -9,6 +9,14 @@ public class EnemyBehaviour : MonoBehaviour
     Transform currentTarget = null;
     [SerializeField] Transform player;
     NavMeshAgent agent;
+    public enum EnemyState
+    {
+        Searching,
+        Chasing,
+        Attacking
+    }
+
+    public EnemyState currentState = EnemyState.Searching;
 
     void Start()
     {
@@ -21,13 +29,35 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (currentTarget == null)
         {
-            FindClosestTowerFromList();
+            currentState = EnemyState.Searching;
         }
-        if (currentTarget != null)
+            switch (currentState)
         {
-            agent.SetDestination(currentTarget.position);
-            takeDamage();
+            case EnemyState.Searching:
+                if (currentTarget == null)
+                {
+                    FindClosestTowerFromList();
+                    agent.isStopped = false;
+                    currentState = EnemyState.Chasing;
+                }
+                break;
+
+            case EnemyState.Chasing:
+
+                agent.SetDestination(currentTarget.position);
+
+                if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
+                {
+                    currentState = EnemyState.Attacking;
+                    agent.isStopped = true; // Zatrzymaj Agenta
+                }
+                break;
+
+            case EnemyState.Attacking:
+                takeDamage();
+                break;
         }
+
     }
     void FindClosestTowerFromList()
     {
@@ -63,6 +93,7 @@ public class EnemyBehaviour : MonoBehaviour
             Tower.ActiveTowers.Remove(currentTarget);
         }
     }
+
     //narazie w ten spsób, ale potem trzeba uwzglêdniæ system zdrowia i obra¿eñ
     public void takeDamage()
     {
@@ -72,7 +103,7 @@ public class EnemyBehaviour : MonoBehaviour
             Tower.ActiveTowers.Remove(currentTarget);
             currentTarget = null;
         }
-        if (currentTarget.CompareTag("Player"))
+        else if (currentTarget.CompareTag("Player"))
         {
             //zadaje obra¿enia graczowi
         }
