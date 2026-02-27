@@ -1,20 +1,21 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float walkingSpeed = 5f;
     [SerializeField] private float acceleration = 30f;
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.15f;
-    [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashBufferTime = 0.1f;
     [Header("Health")]
-    [SerializeField] private float maxHealth = 1f;
     [SerializeField] private float currentHealth = 1f;
-    [SerializeField] private float damageInvincibilityDuration = 0.5f;
+    [Header("Attack")]
+    [SerializeField] private float attackBufferTime = 0.1f;
+
+    private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
     private Rigidbody2D rb;
     private Vector2 movementDirection;
@@ -24,11 +25,13 @@ public class Player : MonoBehaviour
     private float dashCooldownRemainingTime = 0f;
     private Vector2 targetVelocity = Vector2.zero;
     private float invincibilityRemainingTime = 0f;
+    private float attackBufferRemainingTime = 0f;
+    private float attackCooldownRemainingTime = 0f;
+    private Collider2D[] attackColliderBuffer = new Collider2D[16];
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentHealth = maxHealth;
     }
 
     void FixedUpdate()
@@ -36,6 +39,7 @@ public class Player : MonoBehaviour
         UpdateState();
         HandleDash();
         HandleWalking();
+        HandleAttack();
         rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
     }
 
@@ -45,6 +49,8 @@ public class Player : MonoBehaviour
         dashBufferRemainingTime -= Time.fixedDeltaTime;
         dashCooldownRemainingTime -= Time.fixedDeltaTime;
         invincibilityRemainingTime -= Time.fixedDeltaTime;
+        attackBufferRemainingTime -= Time.fixedDeltaTime;
+        attackCooldownRemainingTime -= Time.fixedDeltaTime;
     }
 
     private void HandleDash()
@@ -53,7 +59,7 @@ public class Player : MonoBehaviour
         {
             dashRemainingTime = dashDuration;
             invincibilityRemainingTime = dashDuration;
-            dashCooldownRemainingTime = dashCooldown;
+            dashCooldownRemainingTime = Stats.dashCooldown;
             dashBufferRemainingTime = 0f;
             targetVelocity = lastNonZeroMovementDirection * dashSpeed;
         }
@@ -63,7 +69,18 @@ public class Player : MonoBehaviour
     {
         if (dashRemainingTime <= 0f)
         {
-            targetVelocity = movementDirection * walkingSpeed;
+            targetVelocity = movementDirection * Stats.movementSpeed;
+        }
+    }
+
+    private void HandleAttack()
+    {
+        if (attackBufferRemainingTime > 0f && attackCooldownRemainingTime <= 0f)
+        {
+            attackCooldownRemainingTime = Stats.attackCooldown;
+            attackBufferRemainingTime = 0f;
+            int count = Physics2D.OverlapCircle(transform.position, Stats.attackRange, ContactFilter2D.noFilter, attackColliderBuffer);
+            Debug.Log($"Player attacks: {{ {string.Join(", ", attackColliderBuffer.Take(count).Select(c => c.name)) } }}");
         }
     }
 
@@ -71,9 +88,9 @@ public class Player : MonoBehaviour
     {
         if (invincibilityRemainingTime > 0f) return;
         Debug.Log($"Player takes {damage} damage.");
-        invincibilityRemainingTime = damageInvincibilityDuration;
+        invincibilityRemainingTime = Stats.damageInvincibilityDuration;
         float previousHealth = currentHealth;
-        currentHealth -= damage;
+        currentHealth -= damage * (1f - Stats.damageResistance);
         if (currentHealth <= 0f && previousHealth > 0f)
         {
             Die();
@@ -83,6 +100,14 @@ public class Player : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player has died.");
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            attackBufferRemainingTime = attackBufferTime;
+        }
     }
 
     public void OnDash(InputAction.CallbackContext context)
