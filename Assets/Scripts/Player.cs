@@ -2,7 +2,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public class Player : MonoBehaviour, IDamageable
 {
     [Header("Movement")]
     [SerializeField] private float acceleration = 30f;
@@ -10,10 +11,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private float dashBufferTime = 0.1f;
-    [Header("Health")]
-    [SerializeField] private float currentHealth = 1f;
     [Header("Attack")]
     [SerializeField] private float attackBufferTime = 0.1f;
+    [Header("Tower")]
+    [SerializeField] private Tower towerPrefab;
 
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
@@ -28,10 +29,17 @@ public class Player : MonoBehaviour
     private float attackBufferRemainingTime = 0f;
     private float attackCooldownRemainingTime = 0f;
     private Collider2D[] attackColliderBuffer = new Collider2D[16];
+    private float currentHealth;
+    private int towerResource = 7;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Start()
+    {
+        currentHealth = Stats.maxHealth;
     }
 
     void FixedUpdate()
@@ -100,6 +108,16 @@ public class Player : MonoBehaviour
     public void Die()
     {
         Debug.Log("Player has died.");
+        Destroy(gameObject);
+    }
+
+    public void OnPlace(InputAction.CallbackContext context)
+    {
+        if (context.started && towerResource >= Stats.towerCost)
+        {
+            Instantiate(towerPrefab, Vector3Int.RoundToInt(transform.position), Quaternion.identity);
+            towerResource -= Stats.towerCost;
+        }
     }
 
     public void OnAttack(InputAction.CallbackContext context)

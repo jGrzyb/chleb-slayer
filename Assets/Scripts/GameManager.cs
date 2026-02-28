@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -21,7 +20,8 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class PlayerStats
     {
-        public float attackDamage = 0.1f;
+        public float maxHealth = 100f;
+        public float attackDamage = 1f;
         public float attackCooldown = 0.3f;
         public float attackKnockback = 1f;
         public float critChance = 0f;
@@ -30,7 +30,21 @@ public class GameManager : MonoBehaviour
         public float damageInvincibilityDuration = 0.5f;
         public float movementSpeed = 5f;
         public float dashCooldown = 1f;
-        public float towerDamage = 0.1f;
+        public float towerDamage = 1f;
+        private float _towerAttackCooldown = 1f;
+        public float towerAttackCooldown
+        {
+            get { return _towerAttackCooldown; }
+            set
+            {
+                _towerAttackCooldown = value;
+                OnTowerAttackCooldownChanged?.Invoke();
+            }
+        }
+        public event Action OnTowerAttackCooldownChanged;
+        public float towerMaxHealth = 20f;
         public float towerResistance = 0f;
+        public float towerInvincibilityDuration = 0.5f;
+        public int towerCost = 3;
     }
 }

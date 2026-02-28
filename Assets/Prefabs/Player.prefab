@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 508061413051279288}
   - component: {fileID: 7410856300470377368}
   - component: {fileID: 7799686830840973213}
-  - component: {fileID: 1663473021566918235}
-  m_Layer: 0
+  - component: {fileID: 3443605111857799901}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1663473021566918235}
+      - m_Target: {fileID: 3443605111857799901}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Look[/Mouse/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1663473021566918235}
+      - m_Target: {fileID: 3443605111857799901}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1663473021566918235}
+      - m_Target: {fileID: 3443605111857799901}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnDash
         m_Mode: 0
@@ -240,7 +240,19 @@ MonoBehaviour:
     m_ActionId: 27c5f898-bc57-4ee1-8800-db469aca5fe3
     m_ActionName: 'Player/Crouch[/Keyboard/c]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3443605111857799901}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnPlace
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: f1ba0d36-48eb-4cd5-b651-1c94a6531f70
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
@@ -300,7 +312,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1663473021566918235
+--- !u!114 &3443605111857799901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -315,10 +327,6 @@ MonoBehaviour:
   acceleration: 30
   dashSpeed: 20
   dashDuration: 0.15
-  dashCooldown: 1
   dashBufferTime: 0.1
-  maxHealth: 1
-  currentHealth: 1
-  damageInvincibilityDuration: 0.5
-  attackRange: 0.5
   attackBufferTime: 0.1
+  towerPrefab: {fileID: 2424865063790957099, guid: 9e3ed1f8c3e1c3ac6b8bb3c2cf668ed5, type: 3}
