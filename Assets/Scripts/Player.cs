@@ -1,4 +1,5 @@
 using System.Linq;
+using Mono.Cecil;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,7 +32,6 @@ public class Player : MonoBehaviour, IDamageable
     private float attackCooldownRemainingTime = 0f;
     private Collider2D[] attackColliderBuffer = new Collider2D[16];
     private float currentHealth;
-    private int towerResource = 7;
     private Vector2 lookDirection = Vector2.right;
     private Vector3 attackFieldPos => transform.position + (Vector3)lookDirection.normalized * Stats.attackRange;
 
@@ -131,10 +131,20 @@ public class Player : MonoBehaviour, IDamageable
 
     public void OnPlace(InputAction.CallbackContext context)
     {
-        if (context.started && towerResource >= Stats.towerCost)
+        if (context.started)
         {
-            Instantiate(towerPrefab, Vector3Int.RoundToInt(transform.position), Quaternion.identity);
-            towerResource -= Stats.towerCost;
+            TowerData towerData = ScriptableObject.CreateInstance<TowerData>();
+            towerData.woodCost = 2;
+            towerData.stoneCost = 2;
+            towerData.goldCost = 2;
+            bool shoppingSuccesfull = ResourceManager.instance.BuyTower(towerData);
+
+            if (shoppingSuccesfull)
+            {
+                Vector3 position = Vector3Int.RoundToInt(transform.position - new Vector3(0.5f, 0.5f, 0f)) + new Vector3(0.5f, 0.5f, 0f);
+                Instantiate(towerPrefab, position, Quaternion.identity);
+            }
+            
         }
     }
 

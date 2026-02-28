@@ -14,6 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float damage = 1f;
     [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] Transform player;
+    [SerializeField] private Item itemPrefab;
     NavMeshAgent agent;
     private Rigidbody2D rb;
     public enum EnemyState
@@ -142,6 +143,11 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void Die()
     {
+        int count = Mathf.RoundToInt(GetRandomNormal(2f, 0.67f));
+        for (int i = 0; i < count; i++)
+        {
+            Item item = Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        }
         Destroy(gameObject);
     }
 
@@ -181,5 +187,18 @@ public class EnemyBehaviour : MonoBehaviour
     void OnTriggerStay2D(Collider2D collision)
     {
         HandleAttack(collision);
+    }
+    
+    private float GetRandomNormal(float mean, float standardDeviation)
+    {
+        standardDeviation = Mathf.Abs(standardDeviation);
+
+        float u1 = Mathf.Max(Random.value, 1e-7f);
+        float u2 = Random.value;
+
+        float z0 = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2f * Mathf.PI * u2);
+        z0 = Mathf.Clamp(z0, -3f, 3f);
+
+        return mean + z0 * standardDeviation;
     }
 }

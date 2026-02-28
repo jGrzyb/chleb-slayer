@@ -111,6 +111,7 @@ MonoBehaviour:
   damage: 1
   knockbackDuration: 0.3
   player: {fileID: 0}
+  itemPrefab: {fileID: 2892059622240025194, guid: cb0dca70384d0e724ae8d5645c33ad26, type: 3}
   time: 3
   distance: 10
 --- !u!195 &897358353357593225
