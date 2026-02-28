@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class UpgradeManager : MonoBehaviour
 {
     public List<GameObject> cardHolders;
-    public List<GameObject> weapons;
+    public List<Weapon> weapons;
     public GameObject cardPrefab;
     public GameObject weaponSelectorCurrent;
     public GameObject weaponSelectorUp;
@@ -22,6 +22,9 @@ public class UpgradeManager : MonoBehaviour
     private int currentWeaponIndex = 0;
     private Card selectedCard = null;
 
+    public Card SelectedCard => selectedCard;
+    public Weapon ActiveWeapon => (weapons != null && weapons.Count > 0) ? weapons[currentWeaponIndex] : null;
+
     void Awake()
     {
         instance = this;
@@ -32,7 +35,6 @@ public class UpgradeManager : MonoBehaviour
         GenerateCard();
         GenerateWeaponCounter();
         UpdateWeaponSelector();
-        
     }
 
     void Update()
@@ -80,22 +82,18 @@ public class UpgradeManager : MonoBehaviour
 
         int last = weapons.Count - 1;
 
-        // Current slot always shows the selected weapon
         SetSlotSprite(weaponSelectorCurrent, GetSprite(currentWeaponIndex));
 
-        // Up slot: previous weapon, empty if at index 0
         if (currentWeaponIndex == 0)
             SetSlotSprite(weaponSelectorUp, null);
         else
             SetSlotSprite(weaponSelectorUp, GetSprite(currentWeaponIndex - 1));
 
-        // Down slot: next weapon, empty if at last
         if (currentWeaponIndex == last)
             SetSlotSprite(weaponSelectorDown, null);
         else
             SetSlotSprite(weaponSelectorDown, GetSprite(currentWeaponIndex + 1));
 
-        // Update children of weaponSelectorParent: current index gets specialImage, rest get defaultImage
         if (weaponSelectorParent == null) return;
         for (int i = 0; i < weaponSelectorParent.transform.childCount; i++)
         {
@@ -107,8 +105,7 @@ public class UpgradeManager : MonoBehaviour
     Sprite GetSprite(int index)
     {
         if (index < 0 || index >= weapons.Count) return null;
-        Weapon w = weapons[index].GetComponent<Weapon>();
-        return w != null ? w.weaponSprite : null;
+        return weapons[index]?.weaponSprite;
     }
 
     void SetSlotSprite(GameObject slot, Sprite sprite)
@@ -140,8 +137,6 @@ public class UpgradeManager : MonoBehaviour
     void GenerateWeaponCounter()
     {
         foreach (var weapon in weapons)
-        {
-            GameObject weaponCounter = Instantiate(weaponSelectorPrefab, weaponSelectorParent.transform);
-        }
+            Instantiate(weaponSelectorPrefab, weaponSelectorParent.transform);
     }
 }
