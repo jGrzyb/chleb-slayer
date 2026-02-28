@@ -1,19 +1,26 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Collider2D))]
 public class EnemyBehaviour : MonoBehaviour
 {
     Transform currentTarget = null;
+    [SerializeField]private float health = 5f;
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] Transform player;
     NavMeshAgent agent;
+    private Rigidbody2D rb;
     public enum EnemyState
     {
         Searching,
         Chasing,
-        Attacking,
+        // Attacking,
         Retaliating
     }
     [Header("Enemy Retaliating Settings")]
@@ -29,6 +36,9 @@ public class EnemyBehaviour : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        Player playerObj = FindAnyObjectByType<Player>();
+        player = playerObj?.transform;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -51,21 +61,10 @@ public class EnemyBehaviour : MonoBehaviour
             case EnemyState.Chasing:
                 if (currentTarget == null) break;
                 agent.SetDestination(currentTarget.position);
-
-                if  (Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
-                {
-                    currentState = EnemyState.Attacking;
-                    //agent.isStopped = true; // Zatrzymaj Agenta
-                } 
                 if (currentTarget.CompareTag("Player"))
                 {
                     checkTower();
                 }
-                break;
-            case EnemyState.Attacking:
-                checkTower();
-                if (currentTarget == null) break;
-                takeDamage();
                 break;
             case EnemyState.Retaliating:
                 currentRetaliationTime -= Time.deltaTime;
@@ -76,10 +75,6 @@ public class EnemyBehaviour : MonoBehaviour
                     break;
                 }
                 agent.SetDestination(player.position);
-                if (Vector3.Distance(transform.position, player.position) < 1.0f)
-                {
-                    DamagePlayer();
-                }
                 break;
         }
 
@@ -111,13 +106,6 @@ public class EnemyBehaviour : MonoBehaviour
         currentTarget = closestTower;
     }
 
-    public void RemoveSelfFromList()
-    {
-        if (Tower.ActiveTowers.Contains(currentTarget))
-        {
-            Tower.ActiveTowers.Remove(currentTarget);
-        }
-    }
     public void checkTower()
     {
         if (currentTarget.CompareTag("Player"))
@@ -130,38 +118,68 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    //warunek te¿ pewnie do zmiany na razie odleg³oœæ jest, ale mo¿e byæ np. sprawdzanie czy jest w zasiêgu ataku
-    public void takeDamage()
-    {
-        if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
-        {
-            DamageTower();
-        }
-        else if (currentTarget.CompareTag("Player") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
-        {
-            DamagePlayer();
-        }
-    }
-
-    //tu zmieniaæ system zadawania obra¿eñ graczowi i wie¿y
-    public void DamagePlayer()
-    {
-
-    }
-    public void DamageTower()
-    {
-        Destroy(currentTarget.gameObject);
-        Tower.ActiveTowers.Remove(currentTarget);
-        currentTarget = null;
-    }
-    void OnDestroy()
-    {
-        RemoveSelfFromList();
-    }
     public void SetPlayerAsTarget()
     {
         currentRetaliationTime = time;
         currentState = EnemyState.Retaliating;
         currentTarget = player;
+    }
+
+    public void TakeDamage(float damage, GameObject source, Vector2 knockbackDirection)
+    {
+        float previousHealth = health;
+        health -= damage;
+        ApplyKnockback(knockbackDirection);
+        if (source.TryGetComponent(out Player _))
+        {
+            SetPlayerAsTarget();
+        }
+        if (health <= 0f && previousHealth > 0f)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    private void HandleAttack(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out IDamageable damageable))
+        {
+            damageable.TakeDamage(damage);
+        }
+    }
+
+    private void ApplyKnockback(Vector2 direction)
+    {
+        StartCoroutine(KnockbackCoroutine(direction));
+    }
+
+    private IEnumerator KnockbackCoroutine(Vector2 direction)
+    {
+        agent.isStopped = true;
+        Vector2 knockbackForce = direction.normalized * GameManager.I.playerStats.attackKnockback;
+        float timeRemaining = knockbackDuration;
+        while (timeRemaining > 0f)
+        {
+            timeRemaining -= Time.deltaTime;
+            rb.linearVelocity = Vector2.Lerp(knockbackForce, Vector2.zero, 1f - (timeRemaining / knockbackDuration));
+            yield return null;
+        }
+        rb.linearVelocity = Vector2.zero;
+        agent.isStopped = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        HandleAttack(collision);
+    }
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        HandleAttack(collision);
     }
 }
