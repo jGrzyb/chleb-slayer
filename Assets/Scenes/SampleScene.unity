@@ -171,6 +171,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
+      propertyPath: playerStats.towerDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
+      propertyPath: playerStats.attackDamage
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -862,7 +870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e451cc9653a6d4eb386a2ea37da815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  enemyPrefab: {fileID: 2064968751}
+  enemyPrefab: {fileID: 1931059467736952575, guid: d501632e1054e67478cc9f91cf84db36, type: 3}
   minTime: 1
   maxTime: 5
   isSpawning: 1
@@ -970,7 +978,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199983134}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9ec1a40a92877b4880bb80e5a9f6d9d, type: 3}
   m_Name: 
@@ -1037,11 +1045,6 @@ Transform:
   - {fileID: 757362829}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2064968751 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1931059467736952575, guid: d501632e1054e67478cc9f91cf84db36, type: 3}
-  m_PrefabInstance: {fileID: 9104837919276188213}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2068935146
 GameObject:
   m_ObjectHideFlags: 0

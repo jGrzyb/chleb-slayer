@@ -88,7 +88,14 @@ public class Player : MonoBehaviour, IDamageable
             attackCooldownRemainingTime = Stats.attackCooldown;
             attackBufferRemainingTime = 0f;
             int count = Physics2D.OverlapCircle(transform.position, Stats.attackRange, ContactFilter2D.noFilter, attackColliderBuffer);
-            Debug.Log($"Player attacks: {{ {string.Join(", ", attackColliderBuffer.Take(count).Select(c => c.name)) } }}");
+            for (int i = 0; i < count; i++)
+            {
+                Collider2D collider = attackColliderBuffer[i];
+                if (collider.TryGetComponent(out EnemyBehaviour enemy))
+                {
+                    enemy.TakeDamage(Stats.attackDamage, gameObject);
+                }
+            }
         }
     }
 

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour, IDamageable
 {
+    [SerializeField] private float invincibilityDuration = 0.5f;
     [SerializeField] private Bullet bulletPrefab;
     private float currentHealth;
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
     public static List<Transform> ActiveTowers = new List<Transform>();
+    private float invincibilityRemainingTime = 0f;
     
     void Start()
     {
@@ -15,8 +17,16 @@ public class Tower : MonoBehaviour, IDamageable
         UpdateCooldown();
     }
 
+    void FixedUpdate()
+    {
+        invincibilityRemainingTime -= Time.fixedDeltaTime;
+    }
+
     public void TakeDamage(float damage)
     {
+        if (invincibilityRemainingTime > 0f) return;
+        Debug.Log($"Tower takes {damage} damage.");
+        invincibilityRemainingTime = invincibilityDuration;
         float previousHealth = currentHealth;
         currentHealth -= damage * (1f - Stats.towerResistance);
         if (currentHealth <= 0f && previousHealth > 0f)
