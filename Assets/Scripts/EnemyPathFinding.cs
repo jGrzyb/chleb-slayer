@@ -13,10 +13,16 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Searching,
         Chasing,
-        Attacking
+        Attacking,
+        Retaliating
     }
+    [Header("Enemy Retaliating Settings")]
+    public float time = 3f;
+    public float distance = 10f;
 
-    public EnemyState currentState = EnemyState.Searching;
+    private EnemyState currentState = EnemyState.Searching;
+
+    private float currentRetaliationTime;
 
     void Start()
     {
@@ -37,24 +43,43 @@ public class EnemyBehaviour : MonoBehaviour
                 if (currentTarget == null)
                 {
                     FindClosestTowerFromList();
-                    agent.isStopped = false;
+                    //agent.isStopped = false;
                     currentState = EnemyState.Chasing;
                 }
                 break;
 
             case EnemyState.Chasing:
-
+                if (currentTarget == null) break;
                 agent.SetDestination(currentTarget.position);
 
-                if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
+                if  (Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
                 {
                     currentState = EnemyState.Attacking;
-                    agent.isStopped = true; // Zatrzymaj Agenta
+                    //agent.isStopped = true; // Zatrzymaj Agenta
+                } 
+                if (currentTarget.CompareTag("Player"))
+                {
+                    checkTower();
                 }
                 break;
-
             case EnemyState.Attacking:
+                checkTower();
+                if (currentTarget == null) break;
                 takeDamage();
+                break;
+            case EnemyState.Retaliating:
+                currentRetaliationTime -= Time.deltaTime;
+                if (currentRetaliationTime <= 0f || Vector3.Distance(transform.position, player.position) > distance)
+                {
+                    currentState = EnemyState.Searching;
+                    currentTarget = null;
+                    break;
+                }
+                agent.SetDestination(player.position);
+                if (Vector3.Distance(transform.position, player.position) < 1.0f)
+                {
+                    DamagePlayer();
+                }
                 break;
         }
 
@@ -63,7 +88,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (Tower.ActiveTowers.Count == 0)
         {
-            SetPlayerAsTarget();
+            currentTarget = player;
             return;
         }
 
@@ -93,20 +118,41 @@ public class EnemyBehaviour : MonoBehaviour
             Tower.ActiveTowers.Remove(currentTarget);
         }
     }
+    public void checkTower()
+    {
+        if (currentTarget.CompareTag("Player"))
+        {
+            if (Tower.ActiveTowers.Count > 0)
+            {
+                currentState = EnemyState.Searching;
+                currentTarget = null;
+            }
+        }
+    }
 
-    //narazie w ten spsób, ale potem trzeba uwzglêdniæ system zdrowia i obra¿eñ
+    //warunek te¿ pewnie do zmiany na razie odleg³oœæ jest, ale mo¿e byæ np. sprawdzanie czy jest w zasiêgu ataku
     public void takeDamage()
     {
         if (currentTarget.CompareTag("Tower") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
         {
-            Destroy(currentTarget.gameObject);
-            Tower.ActiveTowers.Remove(currentTarget);
-            currentTarget = null;
+            DamageTower();
         }
-        else if (currentTarget.CompareTag("Player"))
+        else if (currentTarget.CompareTag("Player") && Vector3.Distance(transform.position, currentTarget.position) < 1.0f)
         {
-            //zadaje obra¿enia graczowi
+            DamagePlayer();
         }
+    }
+
+    //tu zmieniaæ system zadawania obra¿eñ graczowi i wie¿y
+    public void DamagePlayer()
+    {
+
+    }
+    public void DamageTower()
+    {
+        Destroy(currentTarget.gameObject);
+        Tower.ActiveTowers.Remove(currentTarget);
+        currentTarget = null;
     }
     void OnDestroy()
     {
@@ -114,6 +160,8 @@ public class EnemyBehaviour : MonoBehaviour
     }
     public void SetPlayerAsTarget()
     {
+        currentRetaliationTime = time;
+        currentState = EnemyState.Retaliating;
         currentTarget = player;
     }
 }
