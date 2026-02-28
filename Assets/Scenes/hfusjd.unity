@@ -184,6 +184,58 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
+--- !u!1 &323396775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 323396777}
+  - component: {fileID: 323396776}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &323396776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323396775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8007d2231052fc54ab9f300de1718d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
+  wood: 100
+  stone: 100
+  gold: 100
+  resourceSprites:
+    woodSprite: {fileID: -7195374030771583919, guid: a7dd700d2c80dd93597c7af67d1f67a0, type: 3}
+    stoneSprite: {fileID: -4250269122547485952, guid: a7dd700d2c80dd93597c7af67d1f67a0, type: 3}
+    goldSprite: {fileID: 3999064616563968367, guid: a7dd700d2c80dd93597c7af67d1f67a0, type: 3}
+  allTowers: []
+--- !u!4 &323396777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323396775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.35756, y: -0.70967, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &326603338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,6 +296,18 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7956850562124668807, guid: 84c3b126492f8b2be96a4f017e3b028a, type: 3}
+      propertyPath: 'weapons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 54cd9097b38722e4d9b7399ae2e45beb, type: 2}
+    - target: {fileID: 7956850562124668807, guid: 84c3b126492f8b2be96a4f017e3b028a, type: 3}
+      propertyPath: 'weapons.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d0bf7e3d0403f340a6eafd563b0aac0, type: 2}
+    - target: {fileID: 7956850562124668807, guid: 84c3b126492f8b2be96a4f017e3b028a, type: 3}
+      propertyPath: 'weapons.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e4a1e36612ff8474c9b1d35f00b436e5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3893,3 +3957,4 @@ SceneRoots:
   - {fileID: 326603338}
   - {fileID: 1510968090}
   - {fileID: 1437487629}
+  - {fileID: 323396777}
