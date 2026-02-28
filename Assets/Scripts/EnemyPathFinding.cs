@@ -111,13 +111,6 @@ public class EnemyBehaviour : MonoBehaviour
         currentTarget = closestTower;
     }
 
-    public void RemoveSelfFromList()
-    {
-        if (Tower.ActiveTowers.Contains(currentTarget))
-        {
-            Tower.ActiveTowers.Remove(currentTarget);
-        }
-    }
     public void checkTower()
     {
         if (currentTarget.CompareTag("Player"))
@@ -153,10 +146,6 @@ public class EnemyBehaviour : MonoBehaviour
         Destroy(currentTarget.gameObject);
         Tower.ActiveTowers.Remove(currentTarget);
         currentTarget = null;
-    }
-    void OnDestroy()
-    {
-        RemoveSelfFromList();
     }
     public void SetPlayerAsTarget()
     {
