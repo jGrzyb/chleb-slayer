@@ -13,14 +13,14 @@ public class TowerEntryUI : MonoBehaviour
     public void Setup(TowerData towerData, int index)
     {
         data = towerData;
-        towerImage.sprite = towerData.towerSprite;
-        indexText.text = (index + 1).ToString();
+        if (towerImage != null) towerImage.sprite = towerData.towerSprite;
+        if (indexText != null)  indexText.text = (index + 1).ToString();
         UpdateAmount();
     }
 
     public void UpdateAmount()
     {
         int count = ResourceManager.instance.GetTowerCount(data);
-        amountText.text = $"{count}";
+        if (amountText != null) amountText.text = $"{count}";
     }
 }

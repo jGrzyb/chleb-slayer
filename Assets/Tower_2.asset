@@ -17,4 +17,4 @@ MonoBehaviour:
   woodCost: 0
   stoneCost: 0
   goldCost: 0
-  towerPrefab: {fileID: 6669092134444936761, guid: 971230412596da943ba4d26100e4d505, type: 3}
+  towerPrefab: {fileID: 2750046275583086561, guid: 39121725714f09e40b46c4f087ffe1ed, type: 3}

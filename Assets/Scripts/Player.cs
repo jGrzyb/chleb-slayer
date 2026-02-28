@@ -15,8 +15,9 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Attack")]
     [SerializeField] private float attackBufferTime = 0.1f;
     [Header("Tower")]
-    [SerializeField] private Tower towerPrefab;
     [SerializeField] private GameObject attackVisualRep;
+
+    private int selectedTowerIndex = 0;
 
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
@@ -60,6 +61,10 @@ public class Player : MonoBehaviour, IDamageable
         lookDirection = (mousePosition - (Vector2)transform.position).normalized;
         attackVisualRep.transform.localScale = Vector3.one * Stats.attackRange * 2;
         attackVisualRep.transform.position = attackFieldPos;
+
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) PlaceTower(0);
+        else if (Keyboard.current.digit2Key.wasPressedThisFrame) PlaceTower(1);
+        else if (Keyboard.current.digit3Key.wasPressedThisFrame) PlaceTower(2);
     }
 
     private void UpdateState()
@@ -129,23 +134,25 @@ public class Player : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    public void OnPlace(InputAction.CallbackContext context)
+    private void PlaceTower(int index)
     {
-        if (context.started)
-        {
-            TowerData towerData = ScriptableObject.CreateInstance<TowerData>();
-            towerData.woodCost = 2;
-            towerData.stoneCost = 2;
-            towerData.goldCost = 2;
-            bool shoppingSuccesfull = ResourceManager.instance.BuyTower(towerData);
+        var allTowers = ResourceManager.instance.allTowers;
+        if (index >= allTowers.Count) return;
 
-            if (shoppingSuccesfull)
-            {
-                Instantiate(towerPrefab, Vector3Int.RoundToInt(transform.position), Quaternion.identity);
-            }
-            
-        }
+        TowerData towerData = allTowers[index];
+        var bought = ResourceManager.instance.boughtTowers;
+
+        if (!bought.TryGetValue(towerData, out int count) || count <= 0) return;
+
+        Tower prefab = towerData.towerPrefab?.GetComponent<Tower>();
+        if (prefab == null) return;
+
+        Instantiate(prefab, Vector3Int.RoundToInt(transform.position), Quaternion.identity);
+        bought[towerData]--;
+        TowersBuilder.instance.RefreshEntry(towerData);
     }
+
+    public void OnPlace(InputAction.CallbackContext context) { }
 
     public void OnAttack(InputAction.CallbackContext context)
     {

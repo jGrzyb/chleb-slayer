@@ -16,7 +16,13 @@ public class ResourceManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public bool CanAfford(int woodCost, int stoneCost, int goldCost)
