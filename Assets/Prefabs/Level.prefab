@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8527862377911978137
+--- !u!1 &5210635902492306932
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4874833398027460760}
-  - component: {fileID: 8838650270157501979}
+  - component: {fileID: 5998463480031412262}
+  - component: {fileID: 5348130288125487191}
   m_Layer: 0
-  m_Name: ResourceManager
+  m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4874833398027460760
+--- !u!4 &5998463480031412262
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8527862377911978137}
+  m_GameObject: {fileID: 5210635902492306932}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,20 +32,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8838650270157501979
+--- !u!114 &5348130288125487191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8527862377911978137}
+  m_GameObject: {fileID: 5210635902492306932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8007d2231052fc54ab9f300de1718d62, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f10ecfdf766c46dcaf3aa147c41915c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
-  resourceSprites:
-    woodSprite: {fileID: -4289197257286375338, guid: 55a5e57b44f34dbccb7ce50d9bfd699b, type: 3}
-    stoneSprite: {fileID: 362572685793628005, guid: b76729ffb3c3c430482407b1f0e113e8, type: 3}
-    goldSprite: {fileID: -3580814249518508431, guid: 62e30ac746f796c93811d41634bbfa78, type: 3}
-  allTowers: []
+  m_EditorClassIdentifier: Assembly-CSharp::Level
