@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
         {
             enemy.TakeDamage(GameManager.I.playerStats.towerDamage, gameObject);
         }
-        if (!collider.isTrigger)
+        if (!collider.isTrigger || collider.TryGetComponent(out EnemyBehaviour _))
         {
             Destroy(gameObject);
         }

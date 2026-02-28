@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,9 +12,10 @@ public class EnemyBehaviour : MonoBehaviour
     Transform currentTarget = null;
     [SerializeField]private float health = 5f;
     [SerializeField] private float damage = 1f;
+    [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] Transform player;
     NavMeshAgent agent;
-    private Collider2D collider2d;
+    private Rigidbody2D rb;
     public enum EnemyState
     {
         Searching,
@@ -36,7 +38,7 @@ public class EnemyBehaviour : MonoBehaviour
         agent.updateUpAxis = false;
         Player playerObj = FindAnyObjectByType<Player>();
         player = playerObj?.transform;
-        collider2d = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -127,6 +129,8 @@ public class EnemyBehaviour : MonoBehaviour
     {
         float previousHealth = health;
         health -= damage;
+        Vector2 knockbackDirection = (transform.position - source.transform.position).normalized;
+        ApplyKnockback(knockbackDirection);
         if (source.TryGetComponent(out Player _))
         {
             SetPlayerAsTarget();
@@ -148,6 +152,26 @@ public class EnemyBehaviour : MonoBehaviour
         {
             damageable.TakeDamage(damage);
         }
+    }
+
+    private void ApplyKnockback(Vector2 direction)
+    {
+        StartCoroutine(KnockbackCoroutine(direction));
+    }
+
+    private IEnumerator KnockbackCoroutine(Vector2 direction)
+    {
+        agent.isStopped = true;
+        Vector2 knockbackForce = direction.normalized * GameManager.I.playerStats.attackKnockback;
+        float timeRemaining = knockbackDuration;
+        while (timeRemaining > 0f)
+        {
+            timeRemaining -= Time.deltaTime;
+            rb.linearVelocity = Vector2.Lerp(knockbackForce, Vector2.zero, 1f - (timeRemaining / knockbackDuration));
+            yield return null;
+        }
+        rb.linearVelocity = Vector2.zero;
+        agent.isStopped = false;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
