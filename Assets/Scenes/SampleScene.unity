@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: playerStats.attackDamage
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
+      propertyPath: playerStats.attackKnockback
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
