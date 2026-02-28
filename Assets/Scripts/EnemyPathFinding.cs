@@ -17,8 +17,8 @@ public class EnemyBehaviour : MonoBehaviour
         Retaliating
     }
     [Header("Enemy Retaliating Settings")]
-    public float time = 3f;
-    public float distance = 10f;
+    [SerializeField] private float time = 3f;
+    [SerializeField] private float distance = 10f;
 
     private EnemyState currentState = EnemyState.Searching;
 
