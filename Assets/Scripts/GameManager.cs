@@ -70,7 +70,8 @@ public class GameManager : MonoBehaviour
         public int TotalEnemiesKilled => enemiesKilledByPlayer + enemiesKilledByTowers;
         public int woodCollected = 0;   
         public int stoneCollected = 0;  
-        public int goldCollected = 0; 
+        public int goldCollected = 0;
+        public bool win = false;
 
         public string GetFormattedTime()
         {

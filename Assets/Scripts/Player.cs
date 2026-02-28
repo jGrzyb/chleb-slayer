@@ -185,6 +185,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public void Die()
     {
+        GameManager.I.endStats.win = false;
         Debug.Log("Player has died.");
         Destroy(gameObject);
     }

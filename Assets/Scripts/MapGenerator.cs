@@ -69,7 +69,6 @@ public class MapGenerator : MonoBehaviour
         mapPositionY = -height/2;
         GenerateMap();
         SpawnEnemySpawners();
-        GenerateCameraBounds();
     }
     private void Start()
     {
@@ -78,6 +77,7 @@ public class MapGenerator : MonoBehaviour
         {
             navMeshSurface.BuildNavMesh();
         }
+        GenerateCameraBounds();
     }
 
     public void GenerateObstacles()
