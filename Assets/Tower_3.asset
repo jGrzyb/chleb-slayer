@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7da9475dcfbd44da3175db0cc02520, type: 3}
+  m_Name: Tower_3
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  towerName: 
+  towerSprite: {fileID: -685315984997744002, guid: 7b4e7e53addf7474c8ebda137b196033, type: 3}
+  woodCost: 2
+  stoneCost: 2
+  goldCost: 0
+  towerPrefab: {fileID: 5572754611885997087, guid: a43e05ab7a5e42540b0d5b897584650f, type: 3}
