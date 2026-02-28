@@ -17,15 +17,16 @@ public class TowersBuilder : MonoBehaviour
 
     void Start()
     {
-        foreach (TowerData tower in ResourceManager.instance.allTowers)
-            SpawnEntry(tower);
+        List<TowerData> towers = ResourceManager.instance.allTowers;
+        for (int i = 0; i < towers.Count; i++)
+            SpawnEntry(towers[i], i);
     }
 
-    void SpawnEntry(TowerData tower)
+    void SpawnEntry(TowerData tower, int index)
     {
         GameObject go = Instantiate(towerEntryPrefab, towerListParent);
         TowerEntryUI entry = go.GetComponent<TowerEntryUI>();
-        entry.Setup(tower);
+        entry.Setup(tower, index);
         entries[tower] = entry;
     }
 
