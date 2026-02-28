@@ -15,6 +15,7 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private float attackBufferTime = 0.1f;
     [Header("Tower")]
     [SerializeField] private Tower towerPrefab;
+    [SerializeField] private GameObject attackVisualRep;
 
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
@@ -31,6 +32,8 @@ public class Player : MonoBehaviour, IDamageable
     private Collider2D[] attackColliderBuffer = new Collider2D[16];
     private float currentHealth;
     private int towerResource = 7;
+    private Vector2 lookDirection = Vector2.right;
+    private Vector3 attackFieldPos => transform.position + (Vector3)lookDirection.normalized * Stats.attackRange;
 
     void Awake()
     {
@@ -49,6 +52,14 @@ public class Player : MonoBehaviour, IDamageable
         HandleWalking();
         HandleAttack();
         rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+    }
+
+    void Update()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        lookDirection = (mousePosition - (Vector2)transform.position).normalized;
+        attackVisualRep.transform.localScale = Vector3.one * Stats.attackRange * 2;
+        attackVisualRep.transform.position = attackFieldPos;
     }
 
     private void UpdateState()
@@ -87,13 +98,13 @@ public class Player : MonoBehaviour, IDamageable
         {
             attackCooldownRemainingTime = Stats.attackCooldown;
             attackBufferRemainingTime = 0f;
-            int count = Physics2D.OverlapCircle(transform.position, Stats.attackRange, ContactFilter2D.noFilter, attackColliderBuffer);
+            int count = Physics2D.OverlapCircle(attackFieldPos, Stats.attackRange, ContactFilter2D.noFilter, attackColliderBuffer);
             for (int i = 0; i < count; i++)
             {
                 Collider2D collider = attackColliderBuffer[i];
                 if (collider.TryGetComponent(out EnemyBehaviour enemy))
                 {
-                    enemy.TakeDamage(Stats.attackDamage, gameObject);
+                    enemy.TakeDamage(Stats.attackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized);
                 }
             }
         }
