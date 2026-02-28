@@ -21,7 +21,15 @@ public class Level : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(LevelCoroutine());
+        EnemySpawner[] spawners = FindObjectsByType<EnemySpawner>(FindObjectsSortMode.None);
+        foreach (WaveData wave in waveDataList)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                wave.spawners[i].spawner = spawners[i];
+            }
+        }
+            StartCoroutine(LevelCoroutine());
     }
 
     private IEnumerator LevelCoroutine()
