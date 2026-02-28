@@ -51,12 +51,16 @@ public class MapGenerator : MonoBehaviour
             navMeshSurface.BuildNavMesh();
         }
     }
+    private float cooldownTime = 2f;
+    private float nextRegenTime = 0f;
+
     void Update()
     {
-        // Generuje mapê na nowo po wciœniêciu spacji
-        if (Keyboard.current != null && Keyboard.current.shiftKey.wasPressedThisFrame)
+        if (Time.time >= nextRegenTime && Keyboard.current != null && Keyboard.current.shiftKey.wasPressedThisFrame)
         {
             RegenerateEntireMap();
+
+            nextRegenTime = Time.time + cooldownTime;
         }
     }
     void Start()
@@ -75,6 +79,21 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateObstacles()
     {
+        int playerSafeRadius = 3;
+        Vector3Int playerCell = Vector3Int.zero;
+
+        Player playerObj = FindAnyObjectByType<Player>();
+        if (playerObj != null)
+        {
+            playerCell = groundTilemap.WorldToCell(playerObj.transform.position);
+        }
+
+        // Granice strefy bezpieczeñstwa
+        int safeMinX = playerCell.x - playerSafeRadius;
+        int safeMaxX = playerCell.x + playerSafeRadius;
+        int safeMinY = playerCell.y - playerSafeRadius;
+        int safeMaxY = playerCell.y + playerSafeRadius;
+
         int obstaclesPlaced = 0;
         int attempts = 0;
         // Podnosimy limit, bo przy du¿ym odstêpie ciê¿ej "trafiæ" w wolne miejsce
@@ -144,8 +163,14 @@ public class MapGenerator : MonoBehaviour
         if (!canPlace)
             continue;
 
-        // Skanowanie strefy buforowej od innych przeszkód
-        int checkMinX = minX - obstacleSpacing;
+            if (!(maxX < safeMinX || minX > safeMaxX || maxY < safeMinY || minY > safeMaxY))
+            {
+                // Przeszkoda wchodzi w strefê gracza, losujemy now¹ pozycjê
+                continue;
+            }
+
+            // Skanowanie strefy buforowej od innych przeszkód
+            int checkMinX = minX - obstacleSpacing;
         int checkMaxX = maxX + obstacleSpacing;
         int checkMinY = minY - obstacleSpacing;
         int checkMaxY = maxY + obstacleSpacing;
