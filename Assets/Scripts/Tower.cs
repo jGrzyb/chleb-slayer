@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : MonoBehaviour, IDamageable
@@ -6,6 +7,7 @@ public class Tower : MonoBehaviour, IDamageable
     [SerializeField] private Bullet bulletPrefab;
     private float currentHealth;
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
+    public static List<Transform> ActiveTowers = new List<Transform>();
     
     void Start()
     {
@@ -44,5 +46,15 @@ public class Tower : MonoBehaviour, IDamageable
     {
         CancelInvoke(nameof(Attack));
         InvokeRepeating(nameof(Attack), Stats.towerAttackCooldown, Stats.towerAttackCooldown);
+    }
+
+    void OnEnable()
+    {
+        ActiveTowers.Add(transform);
+    }
+
+    void OnDisable()
+    {
+        ActiveTowers.Remove(transform);
     }
 }

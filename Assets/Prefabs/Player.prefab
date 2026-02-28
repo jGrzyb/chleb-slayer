@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 508061413051279288}
   - component: {fileID: 7410856300470377368}
   - component: {fileID: 7799686830840973213}
-  - component: {fileID: 3443605111857799901}
+  - component: {fileID: 7956850562124668807}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3443605111857799901}
+      - m_Target: {fileID: 7956850562124668807}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Look[/Mouse/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3443605111857799901}
+      - m_Target: {fileID: 7956850562124668807}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3443605111857799901}
+      - m_Target: {fileID: 7956850562124668807}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnDash
         m_Mode: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Crouch[/Keyboard/c]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3443605111857799901}
+      - m_Target: {fileID: 7956850562124668807}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnPlace
         m_Mode: 0
@@ -312,7 +312,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3443605111857799901
+--- !u!114 &7956850562124668807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,4 +329,4 @@ MonoBehaviour:
   dashDuration: 0.15
   dashBufferTime: 0.1
   attackBufferTime: 0.1
-  towerPrefab: {fileID: 2424865063790957099, guid: 9e3ed1f8c3e1c3ac6b8bb3c2cf668ed5, type: 3}
+  towerPrefab: {fileID: 5313281974071012259, guid: 39121725714f09e40b46c4f087ffe1ed, type: 3}
