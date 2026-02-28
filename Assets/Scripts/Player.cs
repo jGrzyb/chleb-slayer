@@ -109,7 +109,7 @@ public class Player : MonoBehaviour, IDamageable
                 Collider2D collider = attackColliderBuffer[i];
                 if (collider.TryGetComponent(out EnemyBehaviour enemy))
                 {
-                    enemy.TakeDamage(Stats.attackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized);
+                    enemy.TakeDamage(Stats.attackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized, true);
                 }
             }
         }

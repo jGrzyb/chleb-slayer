@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
     {
         if (collider.TryGetComponent(out EnemyBehaviour enemy))
         {
-            enemy.TakeDamage(GameManager.I.playerStats.towerDamage, gameObject, rb.linearVelocity.normalized);
+            enemy.TakeDamage(GameManager.I.playerStats.towerDamage, gameObject, rb.linearVelocity.normalized, false);
         }
         if (!collider.isTrigger || collider.TryGetComponent(out EnemyBehaviour _))
         {

@@ -7,7 +7,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float minTime;
     [SerializeField] private float maxTime;
     public bool isSpawning = true;
-    public int SpawnCount { get; private set; } = 0;
     private void Start()
     {
         StartCoroutine(SpawnRoutine());
@@ -35,7 +34,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void Spawn()
     {
-        SpawnCount++;
         Instantiate(enemyPrefab, transform.position, Quaternion.identity);
     }
 

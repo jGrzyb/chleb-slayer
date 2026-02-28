@@ -13,6 +13,7 @@ public class Tower : MonoBehaviour, IDamageable
     
     void Start()
     {
+        GameManager.I.endStats.towersBuilt++;
         currentHealth = Stats.towerMaxHealth;
         UpdateCooldown();
     }

@@ -60,13 +60,16 @@ public class ResourceManager : MonoBehaviour
             {
                 case Item.ItemType.Wood:
                     wood++;
-                    break;
+                    GameManager.I.endStats.woodCollected ++;
+                break;
                 case Item.ItemType.Stone:
                     stone++;
-                    break;
+                    GameManager.I.endStats.stoneCollected++;
+                break;
                 case Item.ItemType.Gold:
                     gold++;
-                    break;
+                    GameManager.I.endStats.goldCollected++;
+                break;
                 default:
                     Debug.LogWarning("Unknown item type collected.");
                     break;

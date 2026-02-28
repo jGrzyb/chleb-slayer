@@ -126,7 +126,7 @@ public class EnemyBehaviour : MonoBehaviour
         currentTarget = player;
     }
 
-    public void TakeDamage(float damage, GameObject source, Vector2 knockbackDirection)
+    public void TakeDamage(float damage, GameObject source, Vector2 knockbackDirection, bool killedByPlayer)
     {
         float previousHealth = health;
         health -= damage;
@@ -137,12 +137,21 @@ public class EnemyBehaviour : MonoBehaviour
         }
         if (health <= 0f && previousHealth > 0f)
         {
-            Die();
+            Die(killedByPlayer);
         }
     }
 
-    public void Die()
+    public void Die(bool killedByPlayer)
     {
+        if (killedByPlayer)
+        {
+            GameManager.I.endStats.enemiesKilledByPlayer++;
+        }
+        else
+        {
+            GameManager.I.endStats.enemiesKilledByTowers++;
+        }
+
         int count = Mathf.RoundToInt(GetRandomNormal(2f, 0.67f));
         for (int i = 0; i < count; i++)
         {

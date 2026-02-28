@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager I { get; private set; }
     public PlayerStats playerStats = new PlayerStats();
+    public EndStats endStats = new EndStats();
 
     void Awake()
     {
@@ -15,6 +19,15 @@ public class GameManager : MonoBehaviour
         }
         I = this;
         DontDestroyOnLoad(gameObject);
+    }
+    void Update()
+    {
+        // TYMCZASOWY KOD DEBUGOWY
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("StatiscticsScne");
+        }
+        endStats.timePlayed += Time.deltaTime;
     }
 
     [Serializable]
@@ -46,5 +59,34 @@ public class GameManager : MonoBehaviour
         public float towerResistance = 0f;
         public float towerInvincibilityDuration = 0.5f;
         public int towerCost = 3;
+    }
+
+    public class EndStats
+    {
+        public float timePlayed = 0f;
+        public int towersBuilt = 0;
+        public int enemiesKilledByPlayer = 0;
+        public int enemiesKilledByTowers = 0;
+        public int TotalEnemiesKilled => enemiesKilledByPlayer + enemiesKilledByTowers;
+        public int woodCollected = 0;   
+        public int stoneCollected = 0;  
+        public int goldCollected = 0; 
+
+        public string GetFormattedTime()
+        {
+            int minutes = Mathf.FloorToInt(timePlayed / 60F);
+            int seconds = Mathf.FloorToInt(timePlayed - minutes * 60);
+            return string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+        public void ResetRun()
+        {
+            timePlayed = 0f;
+            towersBuilt = 0;
+            enemiesKilledByPlayer = 0;
+            enemiesKilledByTowers = 0;
+            woodCollected = 0;
+            stoneCollected = 0;
+            goldCollected = 0;
+        }
     }
 }
