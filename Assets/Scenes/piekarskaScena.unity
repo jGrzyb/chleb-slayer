@@ -300,55 +300,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &352118799
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 352118801}
-  - component: {fileID: 352118800}
-  m_Layer: 0
-  m_Name: CardMenago
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &352118800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352118799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e2e02c8016fe6f4da66d9f4b1587e4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CardManager
-  cardImages:
-  - {fileID: 21300000, guid: dce5d6134655fb240bb059a7e3a903cb, type: 3}
-  CardRarities: 00000000010000000200000003000000
-  StatsToBoost:
-  - Speed
---- !u!4 &352118801
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352118799}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 672.5812, y: 140.38953, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 519348662}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519348658
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +313,7 @@ GameObject:
   - component: {fileID: 519348660}
   - component: {fileID: 519348659}
   - component: {fileID: 519348663}
+  - component: {fileID: 519348664}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -452,7 +404,6 @@ RectTransform:
   - {fileID: 1505274243}
   - {fileID: 245338814}
   - {fileID: 1200718489}
-  - {fileID: 352118801}
   - {fileID: 802597870}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -489,6 +440,66 @@ MonoBehaviour:
   defaultImage: {fileID: 21300000, guid: 722c1608a3232434e9229bb85ff87890, type: 3}
   specialImage: {fileID: 21300000, guid: dce5d6134655fb240bb059a7e3a903cb, type: 3}
   weaponSelectorPrefab: {fileID: 6669092134444936761, guid: 971230412596da943ba4d26100e4d505, type: 3}
+--- !u!114 &519348664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519348658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2e02c8016fe6f4da66d9f4b1587e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardManager
+  cardImages:
+  - {fileID: -3288464387464691852, guid: cb6fdde199646fd49a289814da9a3db2, type: 3}
+  - {fileID: 7009790900397935103, guid: c4a0405a6cbaa664faaafa571617422a, type: 3}
+  - {fileID: -8993741263646444852, guid: 78804f13547ec6c4bbfeb77c70b59019, type: 3}
+  - {fileID: 253218129765181561, guid: 007c22d0c26d197418d83ee6988e52a1, type: 3}
+  - {fileID: 2841791177340012978, guid: 2c9770e2e701cf14fb36c6b427b9157b, type: 3}
+  - {fileID: -2252146896353705060, guid: 619245042c73cef46bf52feb21afb11c, type: 3}
+  - {fileID: -8689564049112519633, guid: 07814740578489e4ab74a693ba2663a2, type: 3}
+  - {fileID: -632571492045534665, guid: 8845d732944833a4493f5b3264858c4a, type: 3}
+  - {fileID: -2286860936137117144, guid: e09c13c48bf60ca4d9ae7f2bca2f5e48, type: 3}
+  - {fileID: 7412673665926889912, guid: 9fac4ebbb95f3794cbb666eb1511f2fb, type: 3}
+  - {fileID: 3810578650348280459, guid: a383e7c8da56f084db051a626025e5db, type: 3}
+  CardRarities: 00000000010000000200000003000000
+  StatsToBoost:
+  - Speed
+  baking:
+  - "Bu\u0142ka"
+  - Tarta
+  - "M\u0105ka"
+  - Chleb
+  - Croissant
+  - Donut
+  - Gofr
+  - Rogalik
+  - Sernik
+  - Ciastko
+  - Pieczywo
+  maleNames:
+  - "Bo\u017Cy"
+  - "Niebia\u0144ski"
+  - "Pa\u0144ski"
+  - "\u015Awi\u0119ty"
+  - Rajski
+  - Boski
+  femaleNames:
+  - "Bo\u017Ca"
+  - "Niebia\u0144ska"
+  - "Pa\u0144ska"
+  - "\u015Awieta"
+  - Rajska
+  - Boska
+  neutralNames:
+  - "Bo\u017Ce"
+  - "Niebia\u0144skie"
+  - "Pa\u0144skie"
+  - "\u015Awi\u0119te"
+  - Rajskie
+  - Boskie
 --- !u!1 &802597869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,6 +1253,7 @@ GameObject:
   - component: {fileID: 2063332359}
   - component: {fileID: 2063332358}
   - component: {fileID: 2063332357}
+  - component: {fileID: 2063332360}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1323,6 +1335,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2063332360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063332356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1001 &3459547811608662150
 PrefabInstance:
   m_ObjectHideFlags: 0
