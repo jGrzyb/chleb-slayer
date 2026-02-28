@@ -4,31 +4,18 @@ using System.Collections;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private float minTime;
-    [SerializeField] private float maxTime;
-    public bool isSpawning = true;
-    private void Start()
+
+    public void StartSpawner(int enemyCount, float spawnInterval)
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnRoutine(enemyCount, spawnInterval));
     }
 
-    private IEnumerator SpawnRoutine()
+    private IEnumerator SpawnRoutine(int enemyCount, float spawnInterval)
     {
-        while (true)
+        for (int i = 0; i < enemyCount; i++)
         {
-            if (!isSpawning)
-            {
-                yield return null;
-                continue;
-            }
-
-            float delay = Random.Range(minTime, maxTime);
-            yield return new WaitForSeconds(delay);
-
-            if (isSpawning)
-            {
-                Spawn();
-            }
+            Spawn();
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
@@ -36,8 +23,4 @@ public class EnemySpawner : MonoBehaviour
     {
         Instantiate(enemyPrefab, transform.position, Quaternion.identity);
     }
-
-
-    public void StartSpawner() => isSpawning = true;
-    public void StopSpawner() => isSpawning = false;
 }

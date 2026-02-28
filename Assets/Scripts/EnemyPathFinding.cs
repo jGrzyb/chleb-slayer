@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,6 +15,8 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private Item itemPrefab;
     NavMeshAgent agent;
     private Rigidbody2D rb;
+    public static List<EnemyBehaviour> AllEnemies = new List<EnemyBehaviour>();
+    public static event System.Action<int> OnEnemiesListChanged = delegate { };
     public enum EnemyState
     {
         Searching,
@@ -40,6 +40,8 @@ public class EnemyBehaviour : MonoBehaviour
         Player playerObj = FindAnyObjectByType<Player>();
         player = playerObj?.transform;
         rb = GetComponent<Rigidbody2D>();
+        AllEnemies.Add(this);
+        OnEnemiesListChanged?.Invoke(AllEnemies.Count);
     }
 
     void Update()
@@ -209,5 +211,11 @@ public class EnemyBehaviour : MonoBehaviour
         z0 = Mathf.Clamp(z0, -3f, 3f);
 
         return mean + z0 * standardDeviation;
+    }
+
+    void OnDestroy()
+    {
+        AllEnemies.Remove(this);
+        OnEnemiesListChanged.Invoke(AllEnemies.Count);
     }
 }
