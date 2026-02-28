@@ -16,9 +16,17 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private float attackBufferTime = 0.1f;
     [Header("Tower")]
     [SerializeField] private GameObject attackVisualRep;
+    [Header("Base Attack Stats")]
+    [SerializeField] private float baseDamage       = 10f;
+    [SerializeField] private float baseRange        = 2f;
+    [SerializeField] private float baseAttackCooldown = 0.5f;
+    [Header("Weapons")]
+    [SerializeField] private Weapon[] weapons = new Weapon[3];
 
     private int selectedTowerIndex = 0;
+    private int activeWeaponIndex = 0;
 
+    private Weapon ActiveWeapon => weapons[activeWeaponIndex];
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
     private Rigidbody2D rb;
@@ -34,7 +42,10 @@ public class Player : MonoBehaviour, IDamageable
     private Collider2D[] attackColliderBuffer = new Collider2D[16];
     private float currentHealth;
     private Vector2 lookDirection = Vector2.right;
-    private Vector3 attackFieldPos => transform.position + (Vector3)lookDirection.normalized * Stats.attackRange;
+    private float AttackRange    => ActiveWeapon != null ? baseRange         * ActiveWeapon.rangeMultiplier    : baseRange;
+    private float AttackDamage   => ActiveWeapon != null ? baseDamage        * ActiveWeapon.damageMultiplier   : baseDamage;
+    private float AttackCooldown => ActiveWeapon != null ? baseAttackCooldown * ActiveWeapon.cooldownMultiplier : baseAttackCooldown;
+    private Vector3 attackFieldPos => transform.position + (Vector3)lookDirection.normalized * AttackRange;
 
     void Awake()
     {
@@ -59,12 +70,44 @@ public class Player : MonoBehaviour, IDamageable
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         lookDirection = (mousePosition - (Vector2)transform.position).normalized;
-        attackVisualRep.transform.localScale = Vector3.one * Stats.attackRange * 2;
+
+        attackVisualRep.transform.localScale = Vector3.one * AttackRange * 2;
         attackVisualRep.transform.position = attackFieldPos;
+
+        HandleWeaponScroll();
 
         if (Keyboard.current.digit1Key.wasPressedThisFrame) PlaceTower(0);
         else if (Keyboard.current.digit2Key.wasPressedThisFrame) PlaceTower(1);
         else if (Keyboard.current.digit3Key.wasPressedThisFrame) PlaceTower(2);
+    }
+
+    private void HandleWeaponScroll()
+    {
+        if (Mouse.current == null) { Debug.LogError("[Player] Mouse.current jest NULL - Input System nie dziala!"); return; }
+
+        float scroll = Mouse.current.scroll.ReadValue().y;
+
+        if (scroll != 0f) Debug.Log($"[Player] Scroll wykryty: {scroll}");
+
+        if (scroll > 0f)
+        {
+            activeWeaponIndex--;
+            if (activeWeaponIndex < 0) activeWeaponIndex = weapons.Length - 1;
+            LogActiveWeapon();
+        }
+        else if (scroll < 0f)
+        {
+            activeWeaponIndex++;
+            if (activeWeaponIndex >= weapons.Length) activeWeaponIndex = 0;
+            LogActiveWeapon();
+        }
+    }
+
+    private void LogActiveWeapon()
+    {
+        Weapon w = ActiveWeapon;
+        if (w == null) Debug.LogWarning($"[Player] Slot {activeWeaponIndex} jest pusty (null)!");
+        else Debug.Log($"[Player] Broń [{activeWeaponIndex}]: {w.weaponName} | DMG: {AttackDamage:F1} | Range: {AttackRange:F1} | Cooldown: {AttackCooldown:F2}s");
     }
 
     private void UpdateState()
@@ -101,15 +144,15 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (attackBufferRemainingTime > 0f && attackCooldownRemainingTime <= 0f)
         {
-            attackCooldownRemainingTime = Stats.attackCooldown;
+            attackCooldownRemainingTime = AttackCooldown;
             attackBufferRemainingTime = 0f;
-            int count = Physics2D.OverlapCircle(attackFieldPos, Stats.attackRange, ContactFilter2D.noFilter, attackColliderBuffer);
+            int count = Physics2D.OverlapCircle(attackFieldPos, AttackRange, ContactFilter2D.noFilter, attackColliderBuffer);
             for (int i = 0; i < count; i++)
             {
                 Collider2D collider = attackColliderBuffer[i];
                 if (collider.TryGetComponent(out EnemyBehaviour enemy))
                 {
-                    enemy.TakeDamage(Stats.attackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized);
+                    enemy.TakeDamage(AttackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized);
                 }
             }
         }
