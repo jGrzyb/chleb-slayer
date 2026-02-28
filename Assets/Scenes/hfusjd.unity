@@ -1180,7 +1180,7 @@ MonoBehaviour:
   numberOfObstacles: 15
   minLength: 1
   maxLength: 7
-  obstacleSpacing: 3
+  obstacleSpacing: 5
   wallSpacing: 2
   groundTilemap: {fileID: 2068935149}
   obstacleTilemap: {fileID: 757362831}
