@@ -141,7 +141,8 @@ public class Player : MonoBehaviour, IDamageable
 
             if (shoppingSuccesfull)
             {
-                Instantiate(towerPrefab, Vector3Int.RoundToInt(transform.position), Quaternion.identity);
+                Vector3 position = Vector3Int.RoundToInt(transform.position - new Vector3(0.5f, 0.5f, 0f)) + new Vector3(0.5f, 0.5f, 0f);
+                Instantiate(towerPrefab, position, Quaternion.identity);
             }
             
         }
