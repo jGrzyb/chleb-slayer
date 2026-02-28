@@ -1067,7 +1067,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ec1a40a92877b4880bb80e5a9f6d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerSpawner
-  towerPrefab: {fileID: 2750046275583086561, guid: 39121725714f09e40b46c4f087ffe1ed, type: 3}
 --- !u!4 &1199983136
 Transform:
   m_ObjectHideFlags: 0
@@ -1117,7 +1116,7 @@ MonoBehaviour:
   numberOfObstacles: 15
   minLength: 1
   maxLength: 7
-  obstacleSpacing: 3
+  obstacleSpacing: 5
   wallSpacing: 2
   groundTilemap: {fileID: 2068935149}
   obstacleTilemap: {fileID: 757362831}
