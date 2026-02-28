@@ -125,11 +125,10 @@ public class EnemyBehaviour : MonoBehaviour
         currentTarget = player;
     }
 
-    public void TakeDamage(float damage, GameObject source)
+    public void TakeDamage(float damage, GameObject source, Vector2 knockbackDirection)
     {
         float previousHealth = health;
         health -= damage;
-        Vector2 knockbackDirection = (transform.position - source.transform.position).normalized;
         ApplyKnockback(knockbackDirection);
         if (source.TryGetComponent(out Player _))
         {
