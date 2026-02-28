@@ -429,9 +429,9 @@ MonoBehaviour:
   - {fileID: 1091681088}
   - {fileID: 1182034169}
   weapons:
-  - {fileID: 624935228158979898, guid: aceba137bb9daf54d8ed18f39493434a, type: 3}
-  - {fileID: 2051359075318366729, guid: e5a95208f6a2e924e91e0b95e0b28b00, type: 3}
-  - {fileID: 7554603935353422159, guid: b9540b14fcc9597498c01811a0a8afd4, type: 3}
+  - {fileID: 11400000, guid: 54cd9097b38722e4d9b7399ae2e45beb, type: 2}
+  - {fileID: 11400000, guid: 9d0bf7e3d0403f340a6eafd563b0aac0, type: 2}
+  - {fileID: 11400000, guid: e4a1e36612ff8474c9b1d35f00b436e5, type: 2}
   cardPrefab: {fileID: 3627656702003484898, guid: 4ab11de1f191fe944975d8e92b27409e, type: 3}
   weaponSelectorCurrent: {fileID: 1682919210}
   weaponSelectorUp: {fileID: 1466557648}
@@ -465,8 +465,6 @@ MonoBehaviour:
   - {fileID: 7412673665926889912, guid: 9fac4ebbb95f3794cbb666eb1511f2fb, type: 3}
   - {fileID: 3810578650348280459, guid: a383e7c8da56f084db051a626025e5db, type: 3}
   CardRarities: 00000000010000000200000003000000
-  StatsToBoost:
-  - Speed
   baking:
   - "Bu\u0142ka"
   - Tarta
@@ -505,6 +503,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 384717151366974988, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
   m_PrefabInstance: {fileID: 6066532217997092820}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &802597871 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3478345786097961852, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+  m_PrefabInstance: {fileID: 6066532217997092820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e10f848eb252f94ca727f109740007d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1091681088 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2055279584459715986, guid: 678bac096b0391b40bc85fdde6dab53c, type: 3}
@@ -1308,6 +1317,34 @@ PrefabInstance:
     - target: {fileID: 384717151366974988, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 802597871}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: bakedNextScene, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081191127482995686, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8386391570659682722, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
       propertyPath: m_Name
