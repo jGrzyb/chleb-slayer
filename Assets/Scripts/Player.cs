@@ -27,6 +27,8 @@ public class Player : MonoBehaviour, IDamageable
     private int activeWeaponIndex = 0;
 
     private Weapon ActiveWeapon => weapons[activeWeaponIndex];
+    public event System.Action<float> OnHealthChanged = delegate { };
+
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
     private Rigidbody2D rb;
@@ -40,7 +42,15 @@ public class Player : MonoBehaviour, IDamageable
     private float attackBufferRemainingTime = 0f;
     private float attackCooldownRemainingTime = 0f;
     private Collider2D[] attackColliderBuffer = new Collider2D[16];
-    private float currentHealth;
+    private float _currentHealth;
+    public float CurrentHealth { 
+        get { return _currentHealth; } 
+        private set
+        {
+            _currentHealth = value;
+            OnHealthChanged(_currentHealth);
+        }
+    }
     private Vector2 lookDirection = Vector2.right;
     private float AttackRange    => ActiveWeapon != null ? baseRange         * ActiveWeapon.rangeMultiplier    : baseRange;
     private float AttackDamage   => ActiveWeapon != null ? baseDamage        * ActiveWeapon.damageMultiplier   : baseDamage;
@@ -54,7 +64,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void Start()
     {
-        currentHealth = Stats.maxHealth;
+        _currentHealth = Stats.maxHealth;
     }
 
     void FixedUpdate()
@@ -152,7 +162,9 @@ public class Player : MonoBehaviour, IDamageable
                 Collider2D collider = attackColliderBuffer[i];
                 if (collider.TryGetComponent(out EnemyBehaviour enemy))
                 {
-                    enemy.TakeDamage(AttackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized);
+
+                    enemy.TakeDamage(AttackDamage, gameObject, (Vector2)(collider.transform.position - transform.position).normalized, true);
+
                 }
             }
         }
@@ -163,9 +175,9 @@ public class Player : MonoBehaviour, IDamageable
         if (invincibilityRemainingTime > 0f) return;
         Debug.Log($"Player takes {damage} damage.");
         invincibilityRemainingTime = Stats.damageInvincibilityDuration;
-        float previousHealth = currentHealth;
-        currentHealth -= damage * (1f - Stats.damageResistance);
-        if (currentHealth <= 0f && previousHealth > 0f)
+        float previousHealth = _currentHealth;
+        _currentHealth -= damage * (1f - Stats.damageResistance);
+        if (_currentHealth <= 0f && previousHealth > 0f)
         {
             Die();
         }

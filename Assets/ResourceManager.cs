@@ -5,10 +5,38 @@ using System;
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance;
+    public event Action<int> OnWoodChanged = delegate { };
+    public event Action<int> OnStoneChanged = delegate { };
+    public event Action<int> OnGoldChanged = delegate { };
 
-    public int wood  = 100;
-    public int stone = 100;
-    public int gold  = 100;
+    private int _wood  = 100;
+    private int _stone = 100;
+    private int _gold  = 100;
+
+    public int wood {
+        get => _wood;
+        set {
+            _wood = value;
+            OnWoodChanged.Invoke(_wood);
+        }
+    }
+    
+    public int stone {
+        get => _stone;
+        set {
+            _stone = value;
+            OnStoneChanged.Invoke(_stone);
+        }
+    }
+
+    public int gold {
+        get => _gold;
+        set {
+            _gold = value;
+            OnGoldChanged.Invoke(_gold);
+        }
+    }
+
     public ResourceSprites resourceSprites;
 
     public List<TowerData> allTowers = new List<TowerData>();
@@ -60,13 +88,16 @@ public class ResourceManager : MonoBehaviour
             {
                 case Item.ItemType.Wood:
                     wood++;
-                    break;
+                    GameManager.I.endStats.woodCollected ++;
+                break;
                 case Item.ItemType.Stone:
                     stone++;
-                    break;
+                    GameManager.I.endStats.stoneCollected++;
+                break;
                 case Item.ItemType.Gold:
                     gold++;
-                    break;
+                    GameManager.I.endStats.goldCollected++;
+                break;
                 default:
                     Debug.LogWarning("Unknown item type collected.");
                     break;
