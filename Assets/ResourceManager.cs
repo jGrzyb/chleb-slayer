@@ -53,6 +53,14 @@ public class ResourceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void ResetResources()
+    {
+        wood  = 0;
+        stone = 0;
+        gold  = 0;
+        boughtTowers.Clear();
+    }
+
     public bool CanAfford(int woodCost, int stoneCost, int goldCost)
     {
         return wood >= woodCost && stone >= stoneCost && gold >= goldCost;

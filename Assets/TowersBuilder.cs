@@ -21,9 +21,6 @@ public class TowersBuilder : MonoBehaviour
             Destroy(child.gameObject);
         entries.Clear();
 
-        foreach (TowerData tower in ResourceManager.instance.allTowers)
-            ResourceManager.instance.boughtTowers[tower] = 3;
-
         List<TowerData> towers = ResourceManager.instance.allTowers;
         for (int i = 0; i < towers.Count; i++)
             SpawnEntry(towers[i], i);

@@ -22,7 +22,9 @@ public class GameOverUIManager : MonoBehaviour
     [Header("Wiadomości")]
     public TextMeshProUGUI newsText;
 
+    [Header("Sceny")]
     public string sceneName = "NewsScene";
+    public string lostSceneName = "Menu";
 
     void Start()
     {
@@ -59,6 +61,14 @@ public class GameOverUIManager : MonoBehaviour
     }
     public void LoadScene()
     {
-        FadeManager.I.LoadSceneWithFade(sceneName);
+        if(GameManager.I.endStats.win)
+        {
+            FadeManager.I.LoadSceneWithFade(sceneName);
+        }
+        else
+        {
+            ResourceManager.instance.ResetResources();
+            FadeManager.I.LoadSceneWithFade(lostSceneName);
+        }
     }
 }
