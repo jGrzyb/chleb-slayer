@@ -9,9 +9,9 @@ public class ResourceManager : MonoBehaviour
     public event Action<int> OnStoneChanged = delegate { };
     public event Action<int> OnGoldChanged = delegate { };
 
-    private int _wood  = 100;
-    private int _stone = 100;
-    private int _gold  = 100;
+    private int _wood  = 0;
+    private int _stone = 0;
+    private int _gold  = 0;
 
     public int wood {
         get => _wood;
