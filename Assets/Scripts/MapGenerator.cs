@@ -5,6 +5,14 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+
+[System.Serializable]
+public class ObstaclePattern
+{
+    [Tooltip("Przeszkody")]
+    public TileBase[] tiles;
+}
+
 public class MapGenerator : MonoBehaviour
 {
     [Header("Ustawienia Mapy")]
@@ -21,19 +29,32 @@ public class MapGenerator : MonoBehaviour
     private int mapPositionX;
     private int mapPositionY;
 
+    [Tooltip("Szansa (w %) na pojawienie siê dekoracji na pustym polu")]
+    [Range(0f, 100f)]
+    public float decorationDensity = 15f;
+
     [Header("Warstwy (Tilemapy)")]
     public Tilemap groundTilemap;
     public Tilemap obstacleTilemap;
+    public Tilemap decorationsTilemap;
 
     [Header("Pod³oga")]
     public TileBase groundTile;
     public TileBase secondGroundTile;
 
-    [Header("Œciany - Krawêdzie")]
-    public TileBase wallTop;
+    [Header("Œciany - Krawêdzie (Górny rz¹d)")]
+    public TileBase[] wallTopTiles;
     public TileBase wallBottom;
     public TileBase wallLeft;
     public TileBase wallRight;
+
+    // --- NOWE: Dolny rz¹d górnej œciany ---
+    [Header("Œciany - Górna (Dolny rz¹d)")]
+    [Tooltip("Te kafelki pojawi¹ siê bezpoœrednio pod górn¹ krawêdzi¹ œciany")]
+    public TileBase[] wallTopLowerTiles;
+    public TileBase cornerTopLeftLower;
+    public TileBase cornerTopRightLower;
+    // --------------------------------------
 
     [Header("Œciany - Rogi")]
     public TileBase cornerTopLeft;
@@ -41,8 +62,14 @@ public class MapGenerator : MonoBehaviour
     public TileBase cornerBottomLeft;
     public TileBase cornerBottomRight;
 
-    [Header("Przeszkody")]
-    public TileBase obstacleTile;
+    [Header("Dekoracje na mapie")]
+    [Tooltip("Kafelki u¿ywane jako dekoracje (trawa, kamyki, itp.)")]
+    public TileBase[] decorationTiles;
+
+    [Header("Gotowe szablony przeszkód")]
+    public ObstaclePattern[] singleObstacles;
+    public ObstaclePattern[] horizontalObstacles;
+    public ObstaclePattern[] verticalObstacles;
 
     [Header("Przeciwnicy")]
     public GameObject enemySpawnerPrefab;
@@ -50,41 +77,43 @@ public class MapGenerator : MonoBehaviour
     public int distanceFromWall = 1;
 
     private NavMeshPlus.Components.NavMeshSurface navMeshSurface;
+    private float cooldownTime = 2f;
+    private float nextRegenTime = 0f;
 
     public void RegenerateEntireMap()
     {
-        // 1. Czyszczenie starych kafelków
         groundTilemap.ClearAllTiles();
         obstacleTilemap.ClearAllTiles();
+        decorationsTilemap.ClearAllTiles();
 
-        // 3. Generowanie nowej mapy
         GenerateMap();
 
-        // 4. Przebudowanie NavMesha dla nowej geometrii
         if (navMeshSurface != null)
         {
             navMeshSurface.BuildNavMesh();
         }
     }
-    private float cooldownTime = 2f;
-    private float nextRegenTime = 0f;
 
     void Update()
     {
         if (Time.time >= nextRegenTime && Keyboard.current != null && Keyboard.current.shiftKey.wasPressedThisFrame)
         {
             RegenerateEntireMap();
-
             nextRegenTime = Time.time + cooldownTime;
         }
     }
+
     void Awake()
     {
-        mapPositionX = -width/2;
-        mapPositionY = -height/2;
+        groundTilemap.ClearAllTiles();
+        obstacleTilemap.ClearAllTiles();
+        decorationsTilemap.ClearAllTiles();
+        mapPositionX = -width / 2;
+        mapPositionY = -height / 2;
         GenerateMap();
         SpawnEnemySpawners();
     }
+
     private void Start()
     {
         navMeshSurface = FindAnyObjectByType<NavMeshPlus.Components.NavMeshSurface>();
@@ -106,7 +135,6 @@ public class MapGenerator : MonoBehaviour
             playerCell = groundTilemap.WorldToCell(playerObj.transform.position);
         }
 
-        // Granice strefy bezpieczeñstwa
         int safeMinX = playerCell.x - playerSafeRadius;
         int safeMaxX = playerCell.x + playerSafeRadius;
         int safeMinY = playerCell.y - playerSafeRadius;
@@ -114,84 +142,84 @@ public class MapGenerator : MonoBehaviour
 
         int obstaclesPlaced = 0;
         int attempts = 0;
-        // Podnosimy limit, bo przy du¿ym odstêpie ciê¿ej "trafiæ" w wolne miejsce
         int maxAttempts = numberOfObstacles * 100;
 
         while (obstaclesPlaced < numberOfObstacles && attempts < maxAttempts)
         {
             attempts++;
 
-            int length = Random.Range(minLength, maxLength + 1);
             bool isHorizontal = Random.Range(0, 2) == 0;
+            int targetLength = Random.Range(minLength, maxLength + 1);
 
-            // Losujemy tak, by przeszkoda zmieœci³a siê wewn¹trz mapy (aby nie zast¹pi³a œcian).
+            List<ObstaclePattern> validPool = new List<ObstaclePattern>();
+            validPool.AddRange(singleObstacles);
+            if (isHorizontal) validPool.AddRange(horizontalObstacles);
+            else validPool.AddRange(verticalObstacles);
+
+            if (validPool.Count == 0) continue;
+
+            List<ObstaclePattern> chosenSequence = new List<ObstaclePattern>();
+            int currentLength = 0;
+
+            while (currentLength < targetLength)
+            {
+                int remainingSpace = targetLength - currentLength;
+                List<ObstaclePattern> fittingPatterns = new List<ObstaclePattern>();
+
+                foreach (ObstaclePattern p in validPool)
+                {
+                    if (p.tiles != null && p.tiles.Length > 0 && p.tiles.Length <= remainingSpace)
+                    {
+                        fittingPatterns.Add(p);
+                    }
+                }
+
+                if (fittingPatterns.Count == 0) break;
+
+                ObstaclePattern pickedPattern = fittingPatterns[Random.Range(0, fittingPatterns.Count)];
+                chosenSequence.Add(pickedPattern);
+                currentLength += pickedPattern.tiles.Length;
+            }
+
+            int length = currentLength;
+            if (length == 0) continue;
+
+            // --- ZMIANA: Górna granica spawnowania przeszkód obni¿ona o 1 (-2 zamiast -1) ---
             int localStartX = Random.Range(1, width - (isHorizontal ? length - 1 : 0) - 1);
-            int localStartY = Random.Range(1, height - (isHorizontal ? 0 : length - 1) - 1);
+            int localStartY = Random.Range(1, height - (isHorizontal ? 0 : length - 1) - 2);
 
             int startX = localStartX + mapPositionX;
             int startY = localStartY + mapPositionY;
 
             bool canPlace = true;
 
-            // Ustalanie granic samej nowej przeszkody
             int minX = startX;
             int maxX = startX + (isHorizontal ? length - 1 : 0);
             int minY = startY;
             int maxY = startY + (isHorizontal ? 0 : length - 1);
 
-            // Sprawdzenie dotyku prostopad³ego
-        bool touchesWallPerpendicular = false;
-        if (isHorizontal)
-        {
-            // Dotyka górnej lub dolnej œciany
-            if (minY == mapPositionY || maxY == mapPositionY + height - 1)
-                touchesWallPerpendicular = true;
-        }
-        else
-        {
-            // Dotyka lewej lub prawej œciany
-            if (minX == mapPositionX || maxX == mapPositionX + width - 1)
-                touchesWallPerpendicular = true;
-        }
-
-        //// Jeœli NIE dotyka prostopadle, sprawdŸ dystans od œciany
-        //if (!touchesWallPerpendicular)
-        //{
-        //    int wallMinX = mapPositionX + wallSpacing;
-        //    int wallMaxX = mapPositionX + width - 1 - wallSpacing;
-        //    int wallMinY = mapPositionY + wallSpacing;
-        //    int wallMaxY = mapPositionY + height - 1 - wallSpacing;
-
-        //    if (isHorizontal)
-        //    {
-        //        if (minY < wallMinY || maxY > wallMaxY)
-        //        {
-        //            canPlace = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (minX < wallMinX || maxX > wallMaxX)
-        //        {
-        //            canPlace = false;
-        //        }
-        //    }
-        //}
-
-        if (!canPlace)
-            continue;
+            bool touchesWallPerpendicular = false;
+            if (isHorizontal)
+            {
+                // --- ZMIANA: Górna œciana zaczyna siê od mapPositionY + height - 2 ---
+                if (minY == mapPositionY || maxY == mapPositionY + height - 2)
+                    touchesWallPerpendicular = true;
+            }
+            else
+            {
+                if (minX == mapPositionX || maxX == mapPositionX + width - 1)
+                    touchesWallPerpendicular = true;
+            }
 
             if (!(maxX < safeMinX || minX > safeMaxX || maxY < safeMinY || minY > safeMaxY))
             {
-                // Przeszkoda wchodzi w strefê gracza, losujemy now¹ pozycjê
                 continue;
             }
 
-            // Skanowanie strefy buforowej od innych przeszkód
             int checkMinX = minX - obstacleSpacing;
-        int checkMaxX = maxX + obstacleSpacing;
-        int checkMinY = minY - obstacleSpacing;
-        int checkMaxY = maxY + obstacleSpacing;
+            int checkMaxX = maxX + obstacleSpacing;
+            int checkMinY = minY - obstacleSpacing;
+            int checkMaxY = maxY + obstacleSpacing;
 
             for (int cx = checkMinX; cx <= checkMaxX && canPlace; cx++)
             {
@@ -205,17 +233,12 @@ public class MapGenerator : MonoBehaviour
                         int localCy = cy - mapPositionY;
 
                         bool isLeftOrRightWall = (localCx <= 0 || localCx >= width - 1);
-                        bool isTopOrBottomWall = (localCy <= 0 || localCy >= height - 1);
-                        bool isOuterWall = isLeftOrRightWall || isTopOrBottomWall;
+                        // --- ZMIANA: Górna œciana zaczyna siê od wysokoœci height - 2 ---
+                        bool isTopOrBottomWall = (localCy <= 0 || localCy >= height - 2);
 
-                        if (isOuterWall)
-                        {
-                            // Znaleziono œcianê w strefie buforowej - ca³kowicie j¹ ignorujemy
-                            continue;
-                        }
+                        if (isLeftOrRightWall || isTopOrBottomWall) continue;
                         else
                         {
-                            // To jest inna przeszkoda wygenerowana wczeœniej – odrzucamy pozycjê
                             canPlace = false;
                             break;
                         }
@@ -223,11 +246,11 @@ public class MapGenerator : MonoBehaviour
                 }
             }
 
-           checkMinX = minX - wallSpacing;
+            checkMinX = minX - wallSpacing;
             checkMaxX = maxX + wallSpacing;
             checkMinY = minY - wallSpacing;
             checkMaxY = maxY + wallSpacing;
-            // Skanowanie strefy buforowej od przeszkód
+
             for (int cx = checkMinX; cx <= checkMaxX && canPlace; cx++)
             {
                 for (int cy = checkMinY; cy <= checkMaxY; cy++)
@@ -240,75 +263,71 @@ public class MapGenerator : MonoBehaviour
                         int localCy = cy - mapPositionY;
 
                         bool isLeftOrRightWall = (localCx <= 0 || localCx >= width - 1);
-                        bool isTopOrBottomWall = (localCy <= 0 || localCy >= height - 1);
+                        // --- ZMIANA: Górna œciana zajmuje height - 1 oraz height - 2 ---
+                        bool isTopOrBottomWall = (localCy <= 0 || localCy >= height - 2);
                         bool isOuterWall = isLeftOrRightWall || isTopOrBottomWall;
 
                         if (isOuterWall)
                         {
                             bool isPerpendicularTouch = false;
-
                             if (isHorizontal)
                             {
-                                // Sprawdzamy, czy przeszkoda fizycznie dotyka lewej lub prawej krawêdzi (odstêp równe 0)
                                 bool touchesLeft = (minX == mapPositionX + 1);
                                 bool touchesRight = (maxX == mapPositionX + width - 2);
-
-                                // Jeœli skanujemy lew¹ œcianê i przeszkoda jej dotyka
                                 if (localCx <= 0 && touchesLeft) isPerpendicularTouch = true;
-
-                                // Jeœli skanujemy praw¹ œcianê i przeszkoda jej dotyka
                                 if (localCx >= width - 1 && touchesRight) isPerpendicularTouch = true;
                             }
                             else
                             {
-                                // Sprawdzamy, czy pionowa przeszkoda fizycznie dotyka dolnej lub górnej krawêdzi
                                 bool touchesBottom = (minY == mapPositionY + 1);
-                                bool touchesTop = (maxY == mapPositionY + height - 2);
-
+                                // --- ZMIANA: Wewnêtrzna granica dla górnej œciany to teraz height - 3 ---
+                                bool touchesTop = (maxY == mapPositionY + height - 3);
                                 if (localCy <= 0 && touchesBottom) isPerpendicularTouch = true;
-                                if (localCy >= height - 1 && touchesTop) isPerpendicularTouch = true;
+                                if (localCy >= height - 2 && touchesTop) isPerpendicularTouch = true;
                             }
 
-                            if (isPerpendicularTouch)
-                            {
-                                // Akceptujemy - przeszkoda jest prostopad³a i dotyka tej œciany "na styk"
-                                continue;
-                            }
+                            if (isPerpendicularTouch) continue;
                             else
                             {
-                                // Odrzucamy - œciana jest równoleg³a LUB to œciana prostopad³a, ale jest w strefie buforowej (z odstêpem)
                                 canPlace = false;
                                 break;
                             }
                         }
                         else
                         {
-                            // To inna postawiona wczeœniej przeszkoda – odrzucamy
                             canPlace = false;
                             break;
                         }
                     }
                 }
             }
-                if (canPlace)
+
+            if (canPlace)
             {
-                for (int j = 0; j < length; j++)
+                int currentOffset = 0;
+
+                foreach (ObstaclePattern pattern in chosenSequence)
                 {
-                    int currentX = startX + (isHorizontal ? j : 0);
-                    int currentY = startY + (isHorizontal ? 0 : j);
+                    for (int j = 0; j < pattern.tiles.Length; j++)
+                    {
+                        int currentX = startX + (isHorizontal ? currentOffset + j : 0);
+                        int currentY = startY + (isHorizontal ? 0 : currentOffset + j);
 
-                    obstacleTilemap.SetTile(new Vector3Int(currentX, currentY, 0), obstacleTile);
+                        TileBase tileToPlace = pattern.tiles[j];
+                        obstacleTilemap.SetTile(new Vector3Int(currentX, currentY, 0), tileToPlace);
+                    }
+                    currentOffset += pattern.tiles.Length;
                 }
-
                 obstaclesPlaced++;
             }
         }
 
         if (obstaclesPlaced < numberOfObstacles)
         {
-            Debug.LogWarning($"Wygenerowano {obstaclesPlaced}/{numberOfObstacles} przeszkód. Brakuje miejsca! Spróbuj zmniejszyæ wartoœæ 'Obstacle Spacing', zmniejszyæ liczbê przeszkód lub powiêkszyæ mapê.");
+            Debug.LogWarning($"Wygenerowano {obstaclesPlaced}/{numberOfObstacles} przeszkód. Brakuje miejsca!");
         }
     }
+
     void GenerateMap()
     {
         for (int x = 0; x < width; x++)
@@ -333,10 +352,16 @@ public class MapGenerator : MonoBehaviour
                     if (isTop && isLeft)
                     {
                         wallTileToPlace = cornerTopLeft;
+                        // --- NOWE: Stawiamy dolny róg ---
+                        if (cornerTopLeftLower != null)
+                            obstacleTilemap.SetTile(tilePosition + Vector3Int.down, cornerTopLeftLower);
                     }
                     else if (isTop && isRight)
                     {
                         wallTileToPlace = cornerTopRight;
+                        // --- NOWE: Stawiamy dolny róg ---
+                        if (cornerTopRightLower != null)
+                            obstacleTilemap.SetTile(tilePosition + Vector3Int.down, cornerTopRightLower);
                     }
                     else if (isBottom && isLeft)
                     {
@@ -348,7 +373,18 @@ public class MapGenerator : MonoBehaviour
                     }
                     else if (isTop)
                     {
-                        wallTileToPlace = wallTop;
+                        if (wallTopTiles != null && wallTopTiles.Length > 0)
+                        {
+                            int index = (x - 1) % wallTopTiles.Length;
+                            wallTileToPlace = wallTopTiles[index];
+
+                            // --- NOWE: Stawiamy doln¹ czêœæ górnej œciany ---
+                            if (wallTopLowerTiles != null && wallTopLowerTiles.Length > 0)
+                            {
+                                int lowerIndex = (x - 1) % wallTopLowerTiles.Length;
+                                obstacleTilemap.SetTile(tilePosition + Vector3Int.down, wallTopLowerTiles[lowerIndex]);
+                            }
+                        }
                     }
                     else if (isBottom)
                     {
@@ -362,6 +398,7 @@ public class MapGenerator : MonoBehaviour
                     {
                         wallTileToPlace = wallRight;
                     }
+
                     if (wallTileToPlace != null)
                     {
                         obstacleTilemap.SetTile(tilePosition, wallTileToPlace);
@@ -370,7 +407,9 @@ public class MapGenerator : MonoBehaviour
             }
         }
         GenerateObstacles();
+        GenerateDecorations();
     }
+
     void SpawnEnemySpawners()
     {
         if (enemySpawnerPrefab == null)
@@ -388,21 +427,45 @@ public class MapGenerator : MonoBehaviour
         int xMin = distanceFromWall;
         int xMax = width - 1 - distanceFromWall;
         int yMin = distanceFromWall;
-        int yMax = height - 1 - distanceFromWall;
+
+        // --- ZMIANA: Górna granica uwzglêdnia grubsz¹ o 1 kratkê œcianê (-2 zamiast -1) ---
+        int yMax = height - 2 - distanceFromWall;
 
         Vector3Int[] cornerPositions = new Vector3Int[]
         {
-            new Vector3Int(xMin + mapPositionX, yMin + mapPositionY, 0), 
-            new Vector3Int(xMax + mapPositionX, yMin + mapPositionY, 0), 
+            new Vector3Int(xMin + mapPositionX, yMin + mapPositionY, 0),
+            new Vector3Int(xMax + mapPositionX, yMin + mapPositionY, 0),
             new Vector3Int(xMin + mapPositionX, yMax + mapPositionY, 0),
-            new Vector3Int(xMax + mapPositionX, yMax + mapPositionY, 0)  
+            new Vector3Int(xMax + mapPositionX, yMax + mapPositionY, 0)
         };
 
         foreach (Vector3Int gridPos in cornerPositions)
         {
             Vector3 worldPos = groundTilemap.GetCellCenterWorld(gridPos);
-
             Instantiate(enemySpawnerPrefab, worldPos, Quaternion.identity, this.transform);
+        }
+    }
+
+    void GenerateDecorations()
+    {
+        if (decorationTiles == null || decorationTiles.Length == 0) return;
+
+        for (int x = 1; x < width - 1; x++)
+        {
+            // --- ZMIANA: Dekoracje omijaj¹ doln¹ czêœæ górnej œciany (height - 2) ---
+            for (int y = 1; y < height - 2; y++)
+            {
+                Vector3Int tilePosition = new Vector3Int(x + mapPositionX, y + mapPositionY, 0);
+
+                if (!obstacleTilemap.HasTile(tilePosition))
+                {
+                    if (Random.Range(0f, 100f) <= decorationDensity)
+                    {
+                        TileBase randomDeco = decorationTiles[Random.Range(0, decorationTiles.Length)];
+                        decorationsTilemap.SetTile(tilePosition, randomDeco);
+                    }
+                }
+            }
         }
     }
 
@@ -430,7 +493,6 @@ public class MapGenerator : MonoBehaviour
         {
             foundConfiner.BoundingShape2D = boundsCollider;
             foundConfiner.InvalidateBoundingShapeCache();
-
             Debug.Log("<color=green>Sukces!</color> Confiner znalaz³ mapê o rozmiarze " + width + "x" + height);
         }
         else
@@ -438,5 +500,4 @@ public class MapGenerator : MonoBehaviour
             Debug.LogError("<color=red>B³¹d:</color> Nie znaleziono komponentu CinemachineConfiner2D na scenie!");
         }
     }
-
 }
