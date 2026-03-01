@@ -52,6 +52,12 @@ public class Card : MonoBehaviour
         transform.localScale = selected ? selectedScale : normalScale;
     }
 
+    private static Color HexColor(string hex)
+    {
+        ColorUtility.TryParseHtmlString(hex, out Color color);
+        return color;
+    }
+
     private string TranslateStat(string stat) => stat.ToLower() switch
     {
         "damage"   => "obrażenia",
@@ -86,19 +92,19 @@ public class Card : MonoBehaviour
         switch (cardRarity) {
             case CardRarity.Common:
                 ValueToBoost = Random.Range(1, 10);
-                this.GetComponent<Image>().color = Color.blue;
+                this.GetComponent<Image>().color = HexColor("#538bac");
                 break;
             case CardRarity.Rare:
                 ValueToBoost = Random.Range(10, 20);
-                this.GetComponent<Image>().color = Color.green;
+                this.GetComponent<Image>().color = HexColor("#5cad78");
                 break;
             case CardRarity.Epic:
                 ValueToBoost = Random.Range(20, 30);
-                this.GetComponent<Image>().color = Color.magenta;
+                this.GetComponent<Image>().color = HexColor("#af41aa");
                 break;  
             case CardRarity.Legendary:
                 ValueToBoost = Random.Range(30, 40);
-                this.GetComponent<Image>().color = Color.yellow;
+                this.GetComponent<Image>().color = HexColor("#bfa76b");
                 break;
         }
 
