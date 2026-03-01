@@ -52,6 +52,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private IEnumerator WinFloatAnimation(float totalDuration)
     {
+        attackVisualRep.transform.parent = null;
         float riseTime  = totalDuration * 0.8f;
         float fallTime  = totalDuration * 0.2f;
         float riseHeight = 1.5f;
@@ -65,6 +66,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             t += Time.deltaTime / riseTime;
             transform.position = Vector3.Lerp(startPos, topPos, Mathf.SmoothStep(0f, 1f, t));
+            transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.5f, Mathf.SmoothStep(0f, 1f, t));
             yield return null;
         }
 
@@ -87,6 +89,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private Rigidbody2D rb;
     private Animator animator;
+    [SerializeField] private ParticleSystem hurtParticleEffect;
     private Vector2 movementDirection;
     private Vector2 lastNonZeroMovementDirection = Vector2.right;
     private float dashRemainingTime = 0f;
@@ -103,7 +106,7 @@ public class Player : MonoBehaviour, IDamageable
         private set
         {
             _currentHealth = value;
-            OnHealthChanged(_currentHealth);
+            OnHealthChanged.Invoke(_currentHealth);
         }
     }
     private Vector2 lookDirection = Vector2.right;
@@ -120,7 +123,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void Start()
     {
-        _currentHealth = Stats.maxHealth;
+        CurrentHealth = Stats.maxHealth;
     }
 
     void FixedUpdate()
@@ -142,8 +145,11 @@ public class Player : MonoBehaviour, IDamageable
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         lookDirection = (mousePosition - (Vector2)transform.position).normalized;
 
-        attackVisualRep.transform.localScale = Vector3.one * AttackRange * 2;
-        attackVisualRep.transform.position = attackFieldPos;
+        if (!frozen)
+        {
+            attackVisualRep.transform.localScale = Vector3.one * AttackRange * 2;
+            attackVisualRep.transform.position = attackFieldPos;
+        }
 
         HandleWeaponScroll();
 
@@ -242,9 +248,9 @@ public class Player : MonoBehaviour, IDamageable
         if (invincibilityRemainingTime > 0f) return;
         rb.linearVelocity += knockBackDirection.normalized * knockbackForce;
         invincibilityRemainingTime = Stats.damageInvincibilityDuration;
-        float previousHealth = _currentHealth;
-        _currentHealth -= damage * (1f - Stats.damageResistance);
-        if (_currentHealth <= 0f && previousHealth > 0f)
+        float previousHealth = CurrentHealth;
+        CurrentHealth -= damage * (1f - Stats.damageResistance);
+        if (CurrentHealth <= 0f && previousHealth > 0f)
         {
             Die();
         }
@@ -252,6 +258,9 @@ public class Player : MonoBehaviour, IDamageable
         {
             SoundManager.I.PlayExclusive(SoundManager.I.PlayerHurtSFX);
         }
+        animator.SetTrigger("Hurt");
+        hurtParticleEffect.transform.rotation = Quaternion.LookRotation(Vector3.forward, knockBackDirection);
+        hurtParticleEffect.Play();
     }
 
     public void Die()
