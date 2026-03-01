@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour, IDamageable
 {
     [Header("Movement")]
@@ -84,6 +85,7 @@ public class Player : MonoBehaviour, IDamageable
     private GameManager.PlayerStats Stats => GameManager.I.playerStats;
 
     private Rigidbody2D rb;
+    private Animator animator;
     private Vector2 movementDirection;
     private Vector2 lastNonZeroMovementDirection = Vector2.right;
     private float dashRemainingTime = 0f;
@@ -112,6 +114,7 @@ public class Player : MonoBehaviour, IDamageable
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -146,6 +149,10 @@ public class Player : MonoBehaviour, IDamageable
         if (Keyboard.current.digit1Key.wasPressedThisFrame) PlaceTower(0);
         else if (Keyboard.current.digit2Key.wasPressedThisFrame) PlaceTower(1);
         else if (Keyboard.current.digit3Key.wasPressedThisFrame) PlaceTower(2);
+
+        animator.SetFloat("X", lookDirection.x);
+        animator.SetFloat("Y", lookDirection.y);
+        animator.SetBool("IsWalking", rb.linearVelocity.magnitude > 0.1f);
     }
 
     private void HandleWeaponScroll()
@@ -224,6 +231,7 @@ public class Player : MonoBehaviour, IDamageable
 
                 }
             }
+            animator.SetTrigger("Attack");
             SoundManager.I.PlayExclusive(SoundManager.I.PlayerAttackSFX);
         }
     }
