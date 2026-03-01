@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,9 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] Transform player;
     [SerializeField] private Item itemPrefab;
+    [Space]
+    [SerializeField] private TextMeshProUGUI damageText;
+    [SerializeField] private Animator numberAnimator;
     NavMeshAgent agent;
     private Rigidbody2D rb;
     public static List<EnemyBehaviour> AllEnemies = new List<EnemyBehaviour>();
@@ -141,6 +145,8 @@ public class EnemyBehaviour : MonoBehaviour
         {
             Die(killedByPlayer);
         }
+        damageText.text = $"-{damage}";
+        numberAnimator.SetTrigger("Pop");
     }
 
     public void Die(bool killedByPlayer)
