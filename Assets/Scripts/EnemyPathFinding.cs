@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Animator))]
 public class EnemyBehaviour : MonoBehaviour
 {
     Transform currentTarget = null;
@@ -19,6 +20,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private Animator numberAnimator;
     NavMeshAgent agent;
     private Rigidbody2D rb;
+    private Animator animator;
     public static List<EnemyBehaviour> AllEnemies = new List<EnemyBehaviour>();
     public static event System.Action<int> OnEnemiesListChanged = delegate { };
     public enum EnemyState
@@ -39,6 +41,7 @@ public class EnemyBehaviour : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         Player playerObj = FindAnyObjectByType<Player>();
@@ -84,6 +87,8 @@ public class EnemyBehaviour : MonoBehaviour
                 agent.SetDestination(player.position);
                 break;
         }
+        animator.SetFloat("X", agent.desiredVelocity.x);
+        animator.SetFloat("Y", agent.desiredVelocity.y);
 
     }
     void FindClosestTowerFromList()
@@ -178,6 +183,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (collision.TryGetComponent(out IDamageable damageable))
         {
             damageable.TakeDamage(damage, (collision.transform.position - transform.position).normalized);
+            animator.SetTrigger("Attack");
         }
     }
 
