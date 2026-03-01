@@ -19,7 +19,7 @@ public class MapGenerator : MonoBehaviour
     public int width = 50;
     public int height = 50;
 
-    [Header("Ustawienia przeszkód")]
+    [Header("Ustawienia przeszkï¿½d")]
     public int numberOfObstacles = 10;
     public int minLength = 2;
     public int maxLength = 5;
@@ -29,7 +29,7 @@ public class MapGenerator : MonoBehaviour
     private int mapPositionX;
     private int mapPositionY;
 
-    [Tooltip("Szansa (w %) na pojawienie siê dekoracji na pustym polu")]
+    [Tooltip("Szansa (w %) na pojawienie siï¿½ dekoracji na pustym polu")]
     [Range(0f, 100f)]
     public float decorationDensity = 15f;
 
@@ -38,42 +38,42 @@ public class MapGenerator : MonoBehaviour
     public Tilemap obstacleTilemap;
     public Tilemap decorationsTilemap;
 
-    [Header("Pod³oga")]
+    [Header("Podï¿½oga")]
     public TileBase groundTile;
     public TileBase secondGroundTile;
 
-    [Header("Œciany - Krawêdzie (Górny rz¹d)")]
+    [Header("ï¿½ciany - Krawï¿½dzie (Gï¿½rny rzï¿½d)")]
     public TileBase[] wallTopTiles;
     public TileBase wallBottom;
     public TileBase wallLeft;
     public TileBase wallRight;
 
-    // --- NOWE: Dolny rz¹d górnej œciany ---
-    [Header("Œciany - Górna (Dolny rz¹d)")]
-    [Tooltip("Te kafelki pojawi¹ siê bezpoœrednio pod górn¹ krawêdzi¹ œciany")]
+    // --- NOWE: Dolny rzï¿½d gï¿½rnej ï¿½ciany ---
+    [Header("ï¿½ciany - Gï¿½rna (Dolny rzï¿½d)")]
+    [Tooltip("Te kafelki pojawiï¿½ siï¿½ bezpoï¿½rednio pod gï¿½rnï¿½ krawï¿½dziï¿½ ï¿½ciany")]
     public TileBase[] wallTopLowerTiles;
     public TileBase cornerTopLeftLower;
     public TileBase cornerTopRightLower;
     // --------------------------------------
 
-    [Header("Œciany - Rogi")]
+    [Header("ï¿½ciany - Rogi")]
     public TileBase cornerTopLeft;
     public TileBase cornerTopRight;
     public TileBase cornerBottomLeft;
     public TileBase cornerBottomRight;
 
     [Header("Dekoracje na mapie")]
-    [Tooltip("Kafelki u¿ywane jako dekoracje (trawa, kamyki, itp.)")]
+    [Tooltip("Kafelki uï¿½ywane jako dekoracje (trawa, kamyki, itp.)")]
     public TileBase[] decorationTiles;
 
-    [Header("Gotowe szablony przeszkód")]
+    [Header("Gotowe szablony przeszkï¿½d")]
     public ObstaclePattern[] singleObstacles;
     public ObstaclePattern[] horizontalObstacles;
     public ObstaclePattern[] verticalObstacles;
 
     [Header("Przeciwnicy")]
     public GameObject enemySpawnerPrefab;
-    [Tooltip("Odleg³oœæ spawnera od œciany w kafelkach. 1 oznacza kratkê tu¿ obok œciany.")]
+    [Tooltip("Odlegï¿½oï¿½ï¿½ spawnera od ï¿½ciany w kafelkach. 1 oznacza kratkï¿½ tuï¿½ obok ï¿½ciany.")]
     public int distanceFromWall = 1;
 
     private NavMeshPlus.Components.NavMeshSurface navMeshSurface;
@@ -94,14 +94,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Time.time >= nextRegenTime && Keyboard.current != null && Keyboard.current.shiftKey.wasPressedThisFrame)
-        {
-            RegenerateEntireMap();
-            nextRegenTime = Time.time + cooldownTime;
-        }
-    }
+    void Update() { }
 
     void Awake()
     {
@@ -185,7 +178,7 @@ public class MapGenerator : MonoBehaviour
             int length = currentLength;
             if (length == 0) continue;
 
-            // --- ZMIANA: Górna granica spawnowania przeszkód obni¿ona o 1 (-2 zamiast -1) ---
+            // --- ZMIANA: Gï¿½rna granica spawnowania przeszkï¿½d obniï¿½ona o 1 (-2 zamiast -1) ---
             int localStartX = Random.Range(1, width - (isHorizontal ? length - 1 : 0) - 1);
             int localStartY = Random.Range(1, height - (isHorizontal ? 0 : length - 1) - 2);
 
@@ -202,7 +195,7 @@ public class MapGenerator : MonoBehaviour
             bool touchesWallPerpendicular = false;
             if (isHorizontal)
             {
-                // --- ZMIANA: Górna œciana zaczyna siê od mapPositionY + height - 2 ---
+                // --- ZMIANA: Gï¿½rna ï¿½ciana zaczyna siï¿½ od mapPositionY + height - 2 ---
                 if (minY == mapPositionY || maxY == mapPositionY + height - 2)
                     touchesWallPerpendicular = true;
             }
@@ -234,7 +227,7 @@ public class MapGenerator : MonoBehaviour
                         int localCy = cy - mapPositionY;
 
                         bool isLeftOrRightWall = (localCx <= 0 || localCx >= width - 1);
-                        // --- ZMIANA: Górna œciana zaczyna siê od wysokoœci height - 2 ---
+                        // --- ZMIANA: Gï¿½rna ï¿½ciana zaczyna siï¿½ od wysokoï¿½ci height - 2 ---
                         bool isTopOrBottomWall = (localCy <= 0 || localCy >= height - 2);
 
                         if (isLeftOrRightWall || isTopOrBottomWall) continue;
@@ -264,7 +257,7 @@ public class MapGenerator : MonoBehaviour
                         int localCy = cy - mapPositionY;
 
                         bool isLeftOrRightWall = (localCx <= 0 || localCx >= width - 1);
-                        // --- ZMIANA: Górna œciana zajmuje height - 1 oraz height - 2 ---
+                        // --- ZMIANA: Gï¿½rna ï¿½ciana zajmuje height - 1 oraz height - 2 ---
                         bool isTopOrBottomWall = (localCy <= 0 || localCy >= height - 2);
                         bool isOuterWall = isLeftOrRightWall || isTopOrBottomWall;
 
@@ -281,7 +274,7 @@ public class MapGenerator : MonoBehaviour
                             else
                             {
                                 bool touchesBottom = (minY == mapPositionY + 1);
-                                // --- ZMIANA: Wewnêtrzna granica dla górnej œciany to teraz height - 3 ---
+                                // --- ZMIANA: Wewnï¿½trzna granica dla gï¿½rnej ï¿½ciany to teraz height - 3 ---
                                 bool touchesTop = (maxY == mapPositionY + height - 3);
                                 if (localCy <= 0 && touchesBottom) isPerpendicularTouch = true;
                                 if (localCy >= height - 2 && touchesTop) isPerpendicularTouch = true;
@@ -325,7 +318,7 @@ public class MapGenerator : MonoBehaviour
 
         if (obstaclesPlaced < numberOfObstacles)
         {
-            Debug.LogWarning($"Wygenerowano {obstaclesPlaced}/{numberOfObstacles} przeszkód. Brakuje miejsca!");
+            Debug.LogWarning($"Wygenerowano {obstaclesPlaced}/{numberOfObstacles} przeszkï¿½d. Brakuje miejsca!");
         }
     }
 
@@ -353,14 +346,14 @@ public class MapGenerator : MonoBehaviour
                     if (isTop && isLeft)
                     {
                         wallTileToPlace = cornerTopLeft;
-                        // --- NOWE: Stawiamy dolny róg ---
+                        // --- NOWE: Stawiamy dolny rï¿½g ---
                         if (cornerTopLeftLower != null)
                             obstacleTilemap.SetTile(tilePosition + Vector3Int.down, cornerTopLeftLower);
                     }
                     else if (isTop && isRight)
                     {
                         wallTileToPlace = cornerTopRight;
-                        // --- NOWE: Stawiamy dolny róg ---
+                        // --- NOWE: Stawiamy dolny rï¿½g ---
                         if (cornerTopRightLower != null)
                             obstacleTilemap.SetTile(tilePosition + Vector3Int.down, cornerTopRightLower);
                     }
@@ -379,7 +372,7 @@ public class MapGenerator : MonoBehaviour
                             int index = (x - 1) % wallTopTiles.Length;
                             wallTileToPlace = wallTopTiles[index];
 
-                            // --- NOWE: Stawiamy doln¹ czêœæ górnej œciany ---
+                            // --- NOWE: Stawiamy dolnï¿½ czï¿½ï¿½ gï¿½rnej ï¿½ciany ---
                             if (wallTopLowerTiles != null && wallTopLowerTiles.Length > 0)
                             {
                                 int lowerIndex = (x - 1) % wallTopLowerTiles.Length;
@@ -421,7 +414,7 @@ public class MapGenerator : MonoBehaviour
 
         if (distanceFromWall * 2 >= width || distanceFromWall * 2 >= height)
         {
-            Debug.LogError("Mapa jest za ma³a, aby umieœciæ spawnery w takiej odleg³oœci od œciany!");
+            Debug.LogError("Mapa jest za maï¿½a, aby umieï¿½ciï¿½ spawnery w takiej odlegï¿½oï¿½ci od ï¿½ciany!");
             return;
         }
 
@@ -429,7 +422,7 @@ public class MapGenerator : MonoBehaviour
         int xMax = width - 1 - distanceFromWall;
         int yMin = distanceFromWall;
 
-        // --- ZMIANA: Górna granica uwzglêdnia grubsz¹ o 1 kratkê œcianê (-2 zamiast -1) ---
+        // --- ZMIANA: Gï¿½rna granica uwzglï¿½dnia grubszï¿½ o 1 kratkï¿½ ï¿½cianï¿½ (-2 zamiast -1) ---
         int yMax = height - 2 - distanceFromWall;
 
         Vector3Int[] cornerPositions = new Vector3Int[]
@@ -453,7 +446,7 @@ public class MapGenerator : MonoBehaviour
 
         for (int x = 1; x < width - 1; x++)
         {
-            // --- ZMIANA: Dekoracje omijaj¹ doln¹ czêœæ górnej œciany (height - 2) ---
+            // --- ZMIANA: Dekoracje omijajï¿½ dolnï¿½ czï¿½ï¿½ gï¿½rnej ï¿½ciany (height - 2) ---
             for (int y = 1; y < height - 2; y++)
             {
                 Vector3Int tilePosition = new Vector3Int(x + mapPositionX, y + mapPositionY, 0);
@@ -494,11 +487,11 @@ public class MapGenerator : MonoBehaviour
         {
             foundConfiner.BoundingShape2D = boundsCollider;
             foundConfiner.InvalidateBoundingShapeCache();
-            Debug.Log("<color=green>Sukces!</color> Confiner znalaz³ mapê o rozmiarze " + width + "x" + height);
+            Debug.Log("<color=green>Sukces!</color> Confiner znalazï¿½ mapï¿½ o rozmiarze " + width + "x" + height);
         }
         else
         {
-            Debug.LogError("<color=red>B³¹d:</color> Nie znaleziono komponentu CinemachineConfiner2D na scenie!");
+            Debug.LogError("<color=red>Bï¿½ï¿½d:</color> Nie znaleziono komponentu CinemachineConfiner2D na scenie!");
         }
     }
 }

@@ -279,12 +279,12 @@ MonoBehaviour:
   attackVisualRep: {fileID: 6083936382164959053}
   winLights: []
   baseDamage: 10
-  baseRange: 2
+  baseRange: 1.5
   baseAttackCooldown: 0.5
   weapons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 54cd9097b38722e4d9b7399ae2e45beb, type: 2}
+  - {fileID: 11400000, guid: 9d0bf7e3d0403f340a6eafd563b0aac0, type: 2}
+  - {fileID: 11400000, guid: e4a1e36612ff8474c9b1d35f00b436e5, type: 2}
   hurtParticleEffect: {fileID: 5904876231432533131}
 --- !u!208 &4151025300561612383
 NavMeshObstacle:
