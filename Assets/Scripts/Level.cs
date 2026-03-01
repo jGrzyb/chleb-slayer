@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Level : MonoBehaviour
 {
     [SerializeField] private WaveData[] waveDataList;
+    [SerializeField] private float winDelay = 3f;
     public event Action<int> OnWaveChanged = delegate { };
     public int WaveCount => waveDataList.Length;
     private int _waveIndex = 0;
@@ -70,11 +71,23 @@ public class Level : MonoBehaviour
 
     private void CheckWinCondition(int currentEnemiesCount)
     {
-        if (CurrentWave == waveDataList.Length - 1 && currentEnemiesCount <= 0)
-        {
-            GameManager.I.endStats.win = true;
-            SceneManager.LoadScene("StatiscticsScne");
-        }
+        if (CurrentWave == waveDataList.Length - 1 && _isLastWaveSpawningFinished && currentEnemiesCount <= 0)
+            StartCoroutine(WinSequence());
+    }
+
+    private IEnumerator WinSequence()
+    {
+        EnemyBehaviour.OnEnemiesListChanged -= CheckWinCondition;
+
+        Player player = FindFirstObjectByType<Player>();
+        if (player != null) player.Freeze(winDelay);
+
+        yield return new WaitForSeconds(winDelay);
+
+        if (player != null) player.Unfreeze();
+
+        GameManager.I.endStats.win = true;
+        SceneManager.LoadScene("StatiscticsScne");
     }
     private void OnDestroy()
     {

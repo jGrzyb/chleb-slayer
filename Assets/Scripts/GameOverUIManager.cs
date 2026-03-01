@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUIManager : MonoBehaviour
 {
-    [Header("G³ówne Statystyki")]
+    [Header("Gï¿½ï¿½wne Statystyki")]
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI towersBuiltText;
 
-    [Header("Zabójstwa")]
+    [Header("Zabï¿½jstwa")]
     public TextMeshProUGUI playerKillsText;
     public TextMeshProUGUI towerKillsText;
     public TextMeshProUGUI totalKillsText;
@@ -18,7 +18,9 @@ public class GameOverUIManager : MonoBehaviour
     public TextMeshProUGUI stoneText;
     public TextMeshProUGUI goldText;
 
-    // Start wywo³a siê automatycznie zaraz po za³adowaniu sceny Game Over
+    public string sceneName = "NewsScene";
+
+    // Start wywoï¿½a siï¿½ automatycznie zaraz po zaï¿½adowaniu sceny Game Over
     void Start()
     {
         // Sprawdzamy, czy GameManager istnieje (zabezpieczenie na wypadek testowania samej sceny Game Over)
@@ -31,12 +33,12 @@ public class GameOverUIManager : MonoBehaviour
         // Dla wygody tworzymy lokalne odniesienie do statystyk z GameManagera
         GameManager.EndStats stats = GameManager.I.endStats;
 
-        // Przypisujemy pobrane dane bezpoœrednio do komponentów tekstowych
+        // Przypisujemy pobrane dane bezpoï¿½rednio do komponentï¿½w tekstowych
         timeText.text = "Czas: " + stats.GetFormattedTime();
-        towersBuiltText.text = "Postawione wie¿e: " + stats.towersBuilt;
+        towersBuiltText.text = "Postawione wieï¿½e: " + stats.towersBuilt;
 
         playerKillsText.text = "Zabici przez Ciebie: " + stats.enemiesKilledByPlayer;
-        towerKillsText.text = "Zabici przez wie¿e: " + stats.enemiesKilledByTowers;
+        towerKillsText.text = "Zabici przez wieï¿½e: " + stats.enemiesKilledByTowers;
         totalKillsText.text = "Suma zabitych: " + stats.TotalEnemiesKilled;
 
         woodText.text = stats.woodCollected.ToString();
@@ -45,6 +47,6 @@ public class GameOverUIManager : MonoBehaviour
     }
     public void LoadScene()
     {
-        SceneManager.LoadScene("NewsScene");
+        SceneManager.LoadScene(sceneName);
     }
 }
