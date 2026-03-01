@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tower_2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   towerName: "P\u0105czkator"
-  towerSprite: {fileID: 21300000, guid: b61e6f5259cabb34bb8ee8166caca7b7, type: 3}
+  towerSprite: {fileID: 21300000, guid: f0076b49a7f1e304d9422064caeca728, type: 3}
   woodCost: 3
   stoneCost: 4
   goldCost: 2
