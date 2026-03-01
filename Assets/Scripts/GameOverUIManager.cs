@@ -4,11 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUIManager : MonoBehaviour
 {
-    [Header("G��wne Statystyki")]
+
+    [Header("Główne Statystyki")]
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI towersBuiltText;
 
-    [Header("Zab�jstwa")]
+    [Header("Zabójstwa")]
     public TextMeshProUGUI playerKillsText;
     public TextMeshProUGUI towerKillsText;
     public TextMeshProUGUI totalKillsText;
@@ -18,9 +19,11 @@ public class GameOverUIManager : MonoBehaviour
     public TextMeshProUGUI stoneText;
     public TextMeshProUGUI goldText;
 
+    [Header("Wiadomości")]
+    public TextMeshProUGUI newsText;
+
     public string sceneName = "NewsScene";
 
-        // Start wywołuje się automatycznie zaraz po załadowaniu sceny Game Over
     void Start()
     {
         SoundManager.I.PlayMusic(SoundManager.I.NewsMusic);
@@ -45,6 +48,14 @@ public class GameOverUIManager : MonoBehaviour
         woodText.text = stats.woodCollected.ToString();
         stoneText.text = stats.stoneCollected.ToString();
         goldText.text = stats.goldCollected.ToString();
+        if (stats.win)
+        {
+            newsText.text = "PILNE: Zeszłej nocy piekarnia przetrwała oblężenie hordy! Bohaterski piekarz przepędził demony z powrotem do otchłani. Piekło zostało wypieczone na chrupiąco!";
+        }
+        else
+        {
+            newsText.text = "PILNE: Zeszłej nocy horda piekielna obróciła lokalną piekarnię w popiół. Piekarz stracił wszystko, a miasto obudził zapach spalenizny zamiast świeżego chleba. Ciemność zwyciężyła.";
+        }
     }
     public void LoadScene()
     {
