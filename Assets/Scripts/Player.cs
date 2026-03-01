@@ -1,9 +1,10 @@
-using System.Linq;
+using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
-using Mono.Cecil;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -255,9 +256,10 @@ public class Player : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        GameManager.I.endStats.win = false;
         SoundManager.I.PlayExclusive(SoundManager.I.PlayerDeathSFX);
         Destroy(gameObject);
+        GameManager.I.endStats.win = false;
+        SceneManager.LoadScene("StatiscticsScne");
     }
 
     private void PlaceTower(int index)
