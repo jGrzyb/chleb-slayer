@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53a49620ef73552d6b04752d7a6534c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  invincibilityDuration: 0.5
+  invincibilityDuration: 0.6
   bulletPrefab: {fileID: 5737089323089584486, guid: b363a57fe7a032b419580763781461e2, type: 3}
 --- !u!58 &7915349408781462072
 CircleCollider2D:

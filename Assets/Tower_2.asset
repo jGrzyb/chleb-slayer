@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7da9475dcfbd44da3175db0cc02520, type: 3}
   m_Name: Tower_2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: 
-  towerSprite: {fileID: 21300000, guid: f0076b49a7f1e304d9422064caeca728, type: 3}
-  woodCost: 0
-  stoneCost: 0
-  goldCost: 0
+  towerName: "P\u0105czkator"
+  towerSprite: {fileID: 21300000, guid: b61e6f5259cabb34bb8ee8166caca7b7, type: 3}
+  woodCost: 3
+  stoneCost: 4
+  goldCost: 2
   towerPrefab: {fileID: 2750046275583086561, guid: c7cd6f8e8ecf19f459cecf1a68c38b16, type: 3}

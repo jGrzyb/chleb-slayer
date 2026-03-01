@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fb4bbd72926f9a64f82fa8be5896f089
+guid: ef1dbea0ff58592c5a0864eb520f23db
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 280553850036582551
-    second: kajzerka_UI_0
+      213: -7754988575891523622
+    second: timer_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: kajzerka_UI_0
+      name: timer_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1
+        y: 0
         width: 16
-        height: 14
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7987ccb7d3ab4e300800000000000000
-      internalID: 280553850036582551
+      spriteID: ad7f5c85afeb06490800000000000000
+      internalID: -7754988575891523622
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      kajzerka_UI_0: 280553850036582551
+      timer_0: -7754988575891523622
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

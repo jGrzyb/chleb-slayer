@@ -170,7 +170,7 @@ public class EnemyBehaviour : MonoBehaviour
             GameManager.I.endStats.enemiesKilledByTowers++;
         }
 
-        int count = Mathf.RoundToInt(GetRandomNormal(2f, 0.67f));
+        int count = Mathf.RoundToInt(GetRandomNormal(2f, 0.67f) / 2f);
         for (int i = 0; i < count; i++)
         {
             Item item = Instantiate(itemPrefab, transform.position, Quaternion.identity);

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de7da9475dcfbd44da3175db0cc02520, type: 3}
   m_Name: Tower_3
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: 
-  towerSprite: {fileID: 21300000, guid: e2a43fa5be52e1845b56d51b8c384292, type: 3}
-  woodCost: 2
+  towerName: Kajzerkator
+  towerSprite: {fileID: 280553850036582551, guid: fb4bbd72926f9a64f82fa8be5896f089, type: 3}
+  woodCost: 4
   stoneCost: 2
-  goldCost: 0
+  goldCost: 3
   towerPrefab: {fileID: 2750046275583086561, guid: 9bf6c0926ca6a0149bc02574becf11f0, type: 3}
