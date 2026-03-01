@@ -23,6 +23,7 @@ public class GameOverUIManager : MonoBehaviour
         // Start wywołuje się automatycznie zaraz po załadowaniu sceny Game Over
     void Start()
     {
+        SoundManager.I.PlayMusic(SoundManager.I.NewsMusic);
         // Sprawdzamy, czy GameManager istnieje (zabezpieczenie na wypadek testowania samej sceny Game Over)
         if (GameManager.I == null)
         {

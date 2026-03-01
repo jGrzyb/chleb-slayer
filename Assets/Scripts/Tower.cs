@@ -16,6 +16,7 @@ public class Tower : MonoBehaviour, IDamageable
         GameManager.I.endStats.towersBuilt++;
         currentHealth = Stats.towerMaxHealth;
         UpdateCooldown();
+        SoundManager.I.PlayOverlap(SoundManager.I.PlaceTowerClip);
     }
 
     void FixedUpdate()
@@ -44,13 +45,23 @@ public class Tower : MonoBehaviour, IDamageable
 
     private void Attack()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        GameObject closestEnemy = enemies.OrderBy(e => Vector2.Distance(transform.position, e.transform.position)).FirstOrDefault();
+        EnemyBehaviour closestEnemy = null;
+        float closestDistance = float.MaxValue;
+        foreach (var enemy in EnemyBehaviour.AllEnemies)
+        {
+            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+            if (distance < closestDistance)
+            {
+            closestDistance = distance;
+            closestEnemy = enemy;
+            }
+        }
         if (closestEnemy == null) return;
 
         Vector2 direction = (closestEnemy.transform.position - transform.position).normalized;
         Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.Initialize(direction);
+        SoundManager.I.PlayShoot(SoundManager.I.ShootClip);
     }
 
     private void UpdateCooldown()

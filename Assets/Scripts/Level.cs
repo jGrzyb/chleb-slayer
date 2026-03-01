@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 public class Level : MonoBehaviour
@@ -24,10 +25,12 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+        SoundManager.I.PlayMusic(SoundManager.I.LevelMusic);
         EnemyBehaviour.OnEnemiesListChanged += CheckWinCondition;
         EnemySpawner[] spawners = FindObjectsByType<EnemySpawner>(FindObjectsSortMode.None);
         foreach (WaveData wave in waveDataList)
         {
+            Assert.IsTrue(wave.spawners.Length == spawners.Length, "Each wave must have the same number of spawners as there are in the scene.");
             for (int i = 0; i < 4; i++)
             {
                 wave.spawners[i].spawner = spawners[i];

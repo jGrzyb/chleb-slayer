@@ -35,6 +35,7 @@ public class Item : MonoBehaviour
         if (distance < 0.5f)
         {
             ResourceManager.instance.IncrementResource(type);
+            SoundManager.I.PlayOverlap(SoundManager.I.ItemPickupClip);
             Destroy(gameObject);
         }
     }
