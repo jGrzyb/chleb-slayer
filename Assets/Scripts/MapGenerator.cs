@@ -63,13 +63,16 @@ public class MapGenerator : MonoBehaviour
             nextRegenTime = Time.time + cooldownTime;
         }
     }
-    void Start()
+    void Awake()
     {
-        navMeshSurface = FindAnyObjectByType<NavMeshPlus.Components.NavMeshSurface>();
         mapPositionX = -width/2;
         mapPositionY = -height/2;
         GenerateMap();
         SpawnEnemySpawners();
+    }
+    private void Start()
+    {
+        navMeshSurface = FindAnyObjectByType<NavMeshPlus.Components.NavMeshSurface>();
         if (navMeshSurface != null)
         {
             navMeshSurface.BuildNavMesh();

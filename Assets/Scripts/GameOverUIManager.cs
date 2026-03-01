@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameOverUIManager : MonoBehaviour
 {
@@ -41,5 +42,9 @@ public class GameOverUIManager : MonoBehaviour
         woodText.text = stats.woodCollected.ToString();
         stoneText.text = stats.stoneCollected.ToString();
         goldText.text = stats.goldCollected.ToString();
+    }
+    public void LoadScene()
+    {
+        SceneManager.LoadScene("NewsScene");
     }
 }

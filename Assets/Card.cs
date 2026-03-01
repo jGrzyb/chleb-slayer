@@ -6,8 +6,8 @@ using TMPro;
 public class Card : MonoBehaviour
 {
     private CardRarity cardRarity;
-    private string statsToBoost;
-    private int valueToBoost;
+    public string StatsToBoost { get; private set; }
+    public int ValueToBoost { get; private set; }
     public Image cardImage;
 
     private static readonly Vector3 selectedScale = new Vector3(1.1f, 1.1f, 1f);
@@ -52,10 +52,18 @@ public class Card : MonoBehaviour
         transform.localScale = selected ? selectedScale : normalScale;
     }
 
+    private string TranslateStat(string stat) => stat.ToLower() switch
+    {
+        "damage"   => "obrażenia",
+        "range"    => "dystans",
+        "cooldown" => "szybkość",
+        _          => stat
+    };
+
     public void buildCard()
     {
         int statsIndex = Random.Range(0, CardManager.instance.StatsToBoost.Count);
-        statsToBoost = CardManager.instance.StatsToBoost[statsIndex];
+        StatsToBoost = CardManager.instance.StatsToBoost[statsIndex];
 
         int rarityGradation = Random.Range(0, 9);
         if(rarityGradation < 3)
@@ -77,19 +85,19 @@ public class Card : MonoBehaviour
 
         switch (cardRarity) {
             case CardRarity.Common:
-                valueToBoost = Random.Range(1, 10);
+                ValueToBoost = Random.Range(1, 10);
                 this.GetComponent<Image>().color = Color.blue;
                 break;
             case CardRarity.Rare:
-                valueToBoost = Random.Range(10, 20);
+                ValueToBoost = Random.Range(10, 20);
                 this.GetComponent<Image>().color = Color.green;
                 break;
             case CardRarity.Epic:
-                valueToBoost = Random.Range(20, 30);
+                ValueToBoost = Random.Range(20, 30);
                 this.GetComponent<Image>().color = Color.magenta;
                 break;  
             case CardRarity.Legendary:
-                valueToBoost = Random.Range(30, 40);
+                ValueToBoost = Random.Range(30, 40);
                 this.GetComponent<Image>().color = Color.yellow;
                 break;
         }
@@ -111,7 +119,7 @@ public class Card : MonoBehaviour
         {
             cardName.text = CardManager.instance.neutralNames[Random.Range(0, CardManager.instance.neutralNames.Count)]+ " " + CardManager.instance.baking[imageIndex];
         }
-        description.text = "Dopust bozy pozwolil podniesc " + statsToBoost + " o " + valueToBoost + "%";
+        description.text = "Dopust bozy pozwolil podniesc " + TranslateStat(StatsToBoost) + " o " + ValueToBoost + "%";
     }
 
  
