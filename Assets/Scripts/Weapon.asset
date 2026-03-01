@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Weapon
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponName: Bagietka
-  weaponSprite: {fileID: -30749221642623036, guid: a7dd700d2c80dd93597c7af67d1f67a0, type: 3}
+  weaponSprite: {fileID: 21300000, guid: 3a35d4e986638c04a902ac000e3dd792, type: 3}
   damageMultiplier: 1
   rangeMultiplier: 1
   cooldownMultiplier: 1

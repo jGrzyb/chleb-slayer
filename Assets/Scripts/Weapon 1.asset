@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Weapon 1
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponName: Rogal
-  weaponSprite: {fileID: 8827095698427498474, guid: a7dd700d2c80dd93597c7af67d1f67a0, type: 3}
+  weaponSprite: {fileID: 21300000, guid: 707916a10566509489efa52536f18caf, type: 3}
   damageMultiplier: 1
-  rangeMultiplier: 1
+  rangeMultiplier: 1.14
   cooldownMultiplier: 1
