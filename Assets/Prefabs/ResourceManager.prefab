@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
   resourceSprites:
-    woodSprite: {fileID: -4289197257286375338, guid: 55a5e57b44f34dbccb7ce50d9bfd699b, type: 3}
-    stoneSprite: {fileID: 362572685793628005, guid: b76729ffb3c3c430482407b1f0e113e8, type: 3}
-    goldSprite: {fileID: -3580814249518508431, guid: 62e30ac746f796c93811d41634bbfa78, type: 3}
+    woodSprite: {fileID: 21300000, guid: 568e662563c846f4aa36c5f362a4013a, type: 3}
+    stoneSprite: {fileID: 21300000, guid: b52f7af8c1852a44d93eb39de0fd413b, type: 3}
+    goldSprite: {fileID: 21300000, guid: 2e40757f4cd470746ba4eb677e37dd3b, type: 3}
   allTowers: []
