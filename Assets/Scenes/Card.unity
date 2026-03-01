@@ -1346,6 +1346,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3478345786097961852, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
+      propertyPath: sceneName
+      value: Upgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 8386391570659682722, guid: 312808b99ef66b441b6ef506d57ed0a3, type: 3}
       propertyPath: m_Name
       value: Button

@@ -562,6 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c19056f3993c443921195a2633c2cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
+  sceneName: Card
 --- !u!114 &356264580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,6 +900,7 @@ MonoBehaviour:
   woodText: {fileID: 1431964459}
   stoneText: {fileID: 325007706}
   goldText: {fileID: 655698780}
+  sceneName: Card
 --- !u!4 &1425045457
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using Mono.Cecil;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +18,8 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private float attackBufferTime = 0.1f;
     [Header("Tower")]
     [SerializeField] private GameObject attackVisualRep;
+    [Header("Win Lights")]
+    [SerializeField] private List<GameObject> winLights = new List<GameObject>();
     [Header("Base Attack Stats")]
     [SerializeField] private float baseDamage = 10f;
     [SerializeField] private float baseRange = 2f;
@@ -25,6 +29,53 @@ public class Player : MonoBehaviour, IDamageable
 
     private int selectedTowerIndex = 0;
     private int activeWeaponIndex = 0;
+    private bool frozen = false;
+
+    public void Freeze(float duration)
+    {
+        frozen = true;
+        rb.linearVelocity = Vector2.zero;
+        foreach (var light in winLights)
+            if (light != null) light.SetActive(true);
+        StartCoroutine(WinFloatAnimation(duration));
+    }
+
+    public void Unfreeze()
+    {
+        frozen = false;
+        foreach (var light in winLights)
+            if (light != null) light.SetActive(false);
+    }
+
+    private IEnumerator WinFloatAnimation(float totalDuration)
+    {
+        float riseTime  = totalDuration * 0.8f;
+        float fallTime  = totalDuration * 0.2f;
+        float riseHeight = 1.5f;
+
+        Vector3 startPos = transform.position;
+        Vector3 topPos   = startPos + Vector3.up * riseHeight;
+
+        // powolne unoszenie
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / riseTime;
+            transform.position = Vector3.Lerp(startPos, topPos, Mathf.SmoothStep(0f, 1f, t));
+            yield return null;
+        }
+
+        // gwałtowny upadek
+        t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / fallTime;
+            transform.position = Vector3.Lerp(topPos, startPos, t * t);
+            yield return null;
+        }
+
+        transform.position = startPos;
+    }
 
     private Weapon ActiveWeapon => weapons[activeWeaponIndex];
     public event System.Action<float> OnHealthChanged = delegate { };
@@ -69,6 +120,11 @@ public class Player : MonoBehaviour, IDamageable
 
     void FixedUpdate()
     {
+        if (frozen)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
         UpdateState();
         HandleDash();
         HandleWalking();

@@ -25,8 +25,23 @@ public class MapGenerator : MonoBehaviour
     public Tilemap groundTilemap;
     public Tilemap obstacleTilemap;
 
-    [Header("Kafelki")]
+    [Header("Pod³oga")]
     public TileBase groundTile;
+    public TileBase secondGroundTile;
+
+    [Header("Œciany - Krawêdzie")]
+    public TileBase wallTop;
+    public TileBase wallBottom;
+    public TileBase wallLeft;
+    public TileBase wallRight;
+
+    [Header("Œciany - Rogi")]
+    public TileBase cornerTopLeft;
+    public TileBase cornerTopRight;
+    public TileBase cornerBottomLeft;
+    public TileBase cornerBottomRight;
+
+    [Header("Przeszkody")]
     public TileBase obstacleTile;
 
     [Header("Przeciwnicy")]
@@ -302,12 +317,55 @@ public class MapGenerator : MonoBehaviour
             {
                 Vector3Int tilePosition = new Vector3Int(x + mapPositionX, y + mapPositionY, 0);
 
-                groundTilemap.SetTile(tilePosition, groundTile);
+                TileBase currentGroundTile = ((x + y) % 2 == 0) ? groundTile : secondGroundTile;
+                groundTilemap.SetTile(tilePosition, currentGroundTile);
 
                 bool isEdge = (x == 0 || x == width - 1 || y == 0 || y == height - 1);
-                if (isEdge)
+                bool isLeft = (x == 0);
+                bool isRight = (x == width - 1);
+                bool isBottom = (y == 0);
+                bool isTop = (y == height - 1);
+
+                if (isLeft || isRight || isBottom || isTop)
                 {
-                    obstacleTilemap.SetTile(tilePosition, obstacleTile);
+                    TileBase wallTileToPlace = null;
+
+                    if (isTop && isLeft)
+                    {
+                        wallTileToPlace = cornerTopLeft;
+                    }
+                    else if (isTop && isRight)
+                    {
+                        wallTileToPlace = cornerTopRight;
+                    }
+                    else if (isBottom && isLeft)
+                    {
+                        wallTileToPlace = cornerBottomLeft;
+                    }
+                    else if (isBottom && isRight)
+                    {
+                        wallTileToPlace = cornerBottomRight;
+                    }
+                    else if (isTop)
+                    {
+                        wallTileToPlace = wallTop;
+                    }
+                    else if (isBottom)
+                    {
+                        wallTileToPlace = wallBottom;
+                    }
+                    else if (isLeft)
+                    {
+                        wallTileToPlace = wallLeft;
+                    }
+                    else if (isRight)
+                    {
+                        wallTileToPlace = wallRight;
+                    }
+                    if (wallTileToPlace != null)
+                    {
+                        obstacleTilemap.SetTile(tilePosition, wallTileToPlace);
+                    }
                 }
             }
         }

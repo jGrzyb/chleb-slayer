@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
     {
         SoundManager.I.PlayMusic(SoundManager.I.MenuMusic);
     }
-    string sceneName = "Game";
+    public string sceneName = "Game";
     public void PlayGame()
     {
         SceneManager.LoadScene(sceneName);

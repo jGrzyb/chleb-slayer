@@ -18,6 +18,8 @@ public class GameOverUIManager : MonoBehaviour
     public TextMeshProUGUI stoneText;
     public TextMeshProUGUI goldText;
 
+    public string sceneName = "NewsScene";
+
     // Start wywo�a si� automatycznie zaraz po za�adowaniu sceny Game Over
     void Start()
     {
@@ -46,6 +48,6 @@ public class GameOverUIManager : MonoBehaviour
     }
     public void LoadScene()
     {
-        SceneManager.LoadScene("NewsScene");
+        SceneManager.LoadScene(sceneName);
     }
 }
