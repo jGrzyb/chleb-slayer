@@ -148,6 +148,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 2892059622240025194, guid: cb0dca70384d0e724ae8d5645c33ad26, type: 3}
   damageText: {fileID: 8974995218951360711}
   numberAnimator: {fileID: 8923683761620026719}
+  deathEffectPrefab: {fileID: 6692709475536518532, guid: 6714d829c13587956a979a545ffe90dd, type: 3}
   time: 3
   distance: 10
 --- !u!195 &897358353357593225
