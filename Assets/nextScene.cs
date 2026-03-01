@@ -8,6 +8,6 @@ public class nextScene : MonoBehaviour
 
     public void NextScene()
     {
-        SceneManager.LoadScene(sceneName);
+        FadeManager.I.LoadSceneWithFade(sceneName);
     }
 }

@@ -59,6 +59,6 @@ public class GameOverUIManager : MonoBehaviour
     }
     public void LoadScene()
     {
-        SceneManager.LoadScene(sceneName);
+        FadeManager.I.LoadSceneWithFade(sceneName);
     }
 }

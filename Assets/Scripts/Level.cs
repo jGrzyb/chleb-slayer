@@ -90,7 +90,7 @@ public class Level : MonoBehaviour
         if (player != null) player.Unfreeze();
 
         GameManager.I.endStats.win = true;
-        SceneManager.LoadScene("StatiscticsScne");
+        FadeManager.I.LoadSceneWithFade("StatiscticsScne");
     }
     private void OnDestroy()
     {

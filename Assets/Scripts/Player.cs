@@ -259,7 +259,7 @@ public class Player : MonoBehaviour, IDamageable
         SoundManager.I.PlayExclusive(SoundManager.I.PlayerDeathSFX);
         Destroy(gameObject);
         GameManager.I.endStats.win = false;
-        SceneManager.LoadScene("StatiscticsScne");
+        FadeManager.I.LoadSceneWithFade("StatiscticsScne");
     }
 
     private void PlaceTower(int index)

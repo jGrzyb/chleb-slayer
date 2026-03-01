@@ -33,6 +33,17 @@ public class FadeManager : MonoBehaviour
         animator.SetBool("IsBlack", true);
     }
 
+    public void LoadSceneWithFade(string name)
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(name);
+        op.allowSceneActivation = false;
+
+        FadeManager.I.MakeTransition(async () => {
+            await WaitUntilReady(op);
+            op.allowSceneActivation = true;
+        });
+    }
+
     public void LoadSceneWithFade(int buildIndex) {
         AsyncOperation op = SceneManager.LoadSceneAsync(buildIndex);
         op.allowSceneActivation = false;

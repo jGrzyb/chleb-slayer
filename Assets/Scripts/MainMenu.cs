@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     public string sceneName = "Game";
     public void PlayGame()
     {
-        SceneManager.LoadScene(sceneName);
+        FadeManager.I.LoadSceneWithFade(sceneName);
     }
 
     public void QuitGame()
