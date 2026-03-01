@@ -18,6 +18,7 @@ public class EnemyBehaviour : MonoBehaviour
     [Space]
     [SerializeField] private TextMeshProUGUI damageText;
     [SerializeField] private Animator numberAnimator;
+    [SerializeField] private ParticleSystem deathEffectPrefab;
     NavMeshAgent agent;
     private Rigidbody2D rb;
     private Animator animator;
@@ -175,6 +176,8 @@ public class EnemyBehaviour : MonoBehaviour
             Item item = Instantiate(itemPrefab, transform.position, Quaternion.identity);
         }
         SoundManager.I.PlayEnemyDeath(SoundManager.I.EnemyDeathClip);
+        ParticleSystem particles = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(particles, 2f);
         Destroy(gameObject);
     }
 
