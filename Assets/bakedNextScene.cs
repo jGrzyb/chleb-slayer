@@ -32,6 +32,6 @@ public class bakedNextScene : MonoBehaviour
         weapon.ApplyBoost(card.StatsToBoost, card.ValueToBoost);
         Debug.Log($"[bakedNextScene] Zaaplikowano boost '{card.StatsToBoost}' +{card.ValueToBoost}% na broń '{weapon.weaponName}'");
 
-        SceneManager.LoadScene(sceneName);
+        FadeManager.I.LoadSceneWithFade(sceneName);
     }
 }

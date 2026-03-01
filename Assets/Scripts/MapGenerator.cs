@@ -116,6 +116,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
+        GameManager.I.endStats.ResetRun();
         navMeshSurface = FindAnyObjectByType<NavMeshPlus.Components.NavMeshSurface>();
         if (navMeshSurface != null)
         {

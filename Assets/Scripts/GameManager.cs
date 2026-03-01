@@ -22,11 +22,6 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        // TYMCZASOWY KOD DEBUGOWY
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            SceneManager.LoadScene("StatiscticsScne");
-        }
         endStats.timePlayed += Time.deltaTime;
     }
 
