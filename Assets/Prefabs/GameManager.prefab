@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2cac7d75c129d0e6b78aa9225dd2c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  levelSequence:
+  - Level 2
+  - SampleScene
+  - Level 1
   playerStats:
     maxHealth: 100
     attackDamage: 0.1

@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
     public string GetNextLevelName()
     {
         _currentLevelIndex++;
-
         if (_currentLevelIndex >= levelSequence.Count)
         {
             _currentLevelIndex = 0;
