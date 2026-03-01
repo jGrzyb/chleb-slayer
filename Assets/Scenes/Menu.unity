@@ -1681,7 +1681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
       propertyPath: playerStats.towerDamage
-      value: 20
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
       propertyPath: levelSequence.Array.size
@@ -1693,7 +1693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
       propertyPath: playerStats.towerMaxHealth
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8964337155800799238, guid: 2f6678627a5b00710ac6af966164808f, type: 3}
       propertyPath: 'levelSequence.Array.data[0]'
