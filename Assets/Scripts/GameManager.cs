@@ -6,9 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Level Management")]
+    [SerializeField] private List<string> levelSequence;
+    private int _currentLevelIndex = 0;
     public static GameManager I { get; private set; }
     public PlayerStats playerStats = new PlayerStats();
     public EndStats endStats = new EndStats();
+
 
     void Awake()
     {
@@ -23,6 +27,23 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         endStats.timePlayed += Time.deltaTime;
+    }
+
+    public void ResetProgression()
+    {
+        _currentLevelIndex = 0;
+        endStats.ResetRun();
+    }
+
+    public string GetNextLevelName()
+    {
+        _currentLevelIndex++;
+
+        if (_currentLevelIndex >= levelSequence.Count)
+        {
+            _currentLevelIndex = 0;
+        }
+        return levelSequence[_currentLevelIndex];
     }
 
     [Serializable]
@@ -84,5 +105,6 @@ public class GameManager : MonoBehaviour
             stoneCollected = 0;
             goldCollected = 0;
         }
+
     }
 }
