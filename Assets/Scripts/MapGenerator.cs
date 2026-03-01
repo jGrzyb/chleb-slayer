@@ -62,9 +62,6 @@ public class MapGenerator : MonoBehaviour
     public TileBase cornerBottomLeft;
     public TileBase cornerBottomRight;
 
-    [Header("Przeszkody")]
-    public TileBase obstacleTile;
-
     [Header("Dekoracje na mapie")]
     [Tooltip("Kafelki u¿ywane jako dekoracje (trawa, kamyki, itp.)")]
     public TileBase[] decorationTiles;
