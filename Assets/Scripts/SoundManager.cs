@@ -8,12 +8,13 @@ public class SoundManager : MonoBehaviour
     [Header("Music")]
     public AudioSource MenuMusic;
     public AudioSource LevelMusic;
-    public AudioSource ShopMusic;
+    // public AudioSource ShopMusic;
     public AudioSource NewsMusic;
 
     [Header("Exclusive SFX (one at a time)")]
     public AudioSource PlayerHurtSFX;
     public AudioSource PlayerAttackSFX;
+    public AudioSource PlayerDeathSFX;
 
     [Header("Shoot Pool")]
     public int shootPoolSize = 3;
@@ -57,7 +58,7 @@ public class SoundManager : MonoBehaviour
         I = this;
         DontDestroyOnLoad(gameObject);
 
-        _allMusic = new[] { MenuMusic, LevelMusic, ShopMusic, NewsMusic };
+        _allMusic = new[] { MenuMusic, LevelMusic, /* ShopMusic, */ NewsMusic };
 
         _shootPool      = BuildPool(shootPoolSize);
         _enemyHurtPool  = BuildPool(enemyHurtPoolSize);

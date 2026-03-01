@@ -17,8 +17,8 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Tower")]
     [SerializeField] private GameObject attackVisualRep;
     [Header("Base Attack Stats")]
-    [SerializeField] private float baseDamage       = 10f;
-    [SerializeField] private float baseRange        = 2f;
+    [SerializeField] private float baseDamage = 10f;
+    [SerializeField] private float baseRange = 2f;
     [SerializeField] private float baseAttackCooldown = 0.5f;
     [Header("Weapons")]
     [SerializeField] private Weapon[] weapons = new Weapon[3];
@@ -167,13 +167,13 @@ public class Player : MonoBehaviour, IDamageable
 
                 }
             }
+            SoundManager.I.PlayExclusive(SoundManager.I.PlayerAttackSFX);
         }
     }
 
     public void TakeDamage(float damage)
     {
         if (invincibilityRemainingTime > 0f) return;
-        Debug.Log($"Player takes {damage} damage.");
         invincibilityRemainingTime = Stats.damageInvincibilityDuration;
         float previousHealth = _currentHealth;
         _currentHealth -= damage * (1f - Stats.damageResistance);
@@ -181,12 +181,16 @@ public class Player : MonoBehaviour, IDamageable
         {
             Die();
         }
+        else
+        {
+            SoundManager.I.PlayExclusive(SoundManager.I.PlayerHurtSFX);
+        }
     }
 
     public void Die()
     {
         GameManager.I.endStats.win = false;
-        Debug.Log("Player has died.");
+        SoundManager.I.PlayExclusive(SoundManager.I.PlayerDeathSFX);
         Destroy(gameObject);
     }
 
