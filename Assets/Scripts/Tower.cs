@@ -24,7 +24,7 @@ public class Tower : MonoBehaviour, IDamageable
         invincibilityRemainingTime -= Time.fixedDeltaTime;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector2 knockBackDirection)
     {
         if (invincibilityRemainingTime > 0f) return;
         Debug.Log($"Tower takes {damage} damage.");

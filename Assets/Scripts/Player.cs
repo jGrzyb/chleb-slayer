@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IDamageable
 {
     [Header("Movement")]
     [SerializeField] private float acceleration = 30f;
+    [SerializeField] private float knockbackForce = 20f;
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.15f;
@@ -227,9 +228,10 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector2 knockBackDirection)
     {
         if (invincibilityRemainingTime > 0f) return;
+        rb.linearVelocity += knockBackDirection.normalized * knockbackForce;
         invincibilityRemainingTime = Stats.damageInvincibilityDuration;
         float previousHealth = _currentHealth;
         _currentHealth -= damage * (1f - Stats.damageResistance);

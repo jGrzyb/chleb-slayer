@@ -177,7 +177,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (collision.TryGetComponent(out IDamageable damageable))
         {
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(damage, (collision.transform.position - transform.position).normalized);
         }
     }
 
