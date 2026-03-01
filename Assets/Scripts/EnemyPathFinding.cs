@@ -137,6 +137,7 @@ public class EnemyBehaviour : MonoBehaviour
         float previousHealth = health;
         health -= damage;
         ApplyKnockback(knockbackDirection);
+        numberAnimator.SetTrigger("Pop");
         if (source.TryGetComponent(out Player _))
         {
             SetPlayerAsTarget();
@@ -145,8 +146,11 @@ public class EnemyBehaviour : MonoBehaviour
         {
             Die(killedByPlayer);
         }
+        else
+        {
+            SoundManager.I.PlayEnemyHurt(SoundManager.I.EnemyHurtClip);
+        }
         damageText.text = $"-{damage}";
-        numberAnimator.SetTrigger("Pop");
     }
 
     public void Die(bool killedByPlayer)
@@ -165,6 +169,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             Item item = Instantiate(itemPrefab, transform.position, Quaternion.identity);
         }
+        SoundManager.I.PlayEnemyDeath(SoundManager.I.EnemyDeathClip);
         Destroy(gameObject);
     }
 
@@ -172,7 +177,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (collision.TryGetComponent(out IDamageable damageable))
         {
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(damage, (collision.transform.position - transform.position).normalized);
         }
     }
 

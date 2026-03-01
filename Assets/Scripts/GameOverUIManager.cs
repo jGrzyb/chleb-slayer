@@ -20,9 +20,10 @@ public class GameOverUIManager : MonoBehaviour
 
     public string sceneName = "NewsScene";
 
-    // Start wywo�a si� automatycznie zaraz po za�adowaniu sceny Game Over
+        // Start wywołuje się automatycznie zaraz po załadowaniu sceny Game Over
     void Start()
     {
+        SoundManager.I.PlayMusic(SoundManager.I.NewsMusic);
         // Sprawdzamy, czy GameManager istnieje (zabezpieczenie na wypadek testowania samej sceny Game Over)
         if (GameManager.I == null)
         {
@@ -35,10 +36,10 @@ public class GameOverUIManager : MonoBehaviour
 
         // Przypisujemy pobrane dane bezpo�rednio do komponent�w tekstowych
         timeText.text = "Czas: " + stats.GetFormattedTime();
-        towersBuiltText.text = "Postawione wie�e: " + stats.towersBuilt;
+        towersBuiltText.text = "Postawione wieże: " + stats.towersBuilt;
 
         playerKillsText.text = "Zabici przez Ciebie: " + stats.enemiesKilledByPlayer;
-        towerKillsText.text = "Zabici przez wie�e: " + stats.enemiesKilledByTowers;
+        towerKillsText.text = "Zabici przez wieże: " + stats.enemiesKilledByTowers;
         totalKillsText.text = "Suma zabitych: " + stats.TotalEnemiesKilled;
 
         woodText.text = stats.woodCollected.ToString();

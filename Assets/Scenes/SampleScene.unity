@@ -305,6 +305,55 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb0dca70384d0e724ae8d5645c33ad26, type: 3}
+--- !u!1 &179694304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 179694306}
+  - component: {fileID: 179694305}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &179694305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179694304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: f590c94c84c65b243946c1d74152953f, type: 2}
+--- !u!4 &179694306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179694304}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.37912604, y: 0.8112042, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &326603338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -832,7 +881,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -1524,6 +1573,15 @@ MonoBehaviour:
   groundTilemap: {fileID: 2068935149}
   obstacleTilemap: {fileID: 1905003839}
   groundTile: {fileID: 11400000, guid: 4e1be212c7a414f46a8554da5302eb5f, type: 2}
+  secondGroundTile: {fileID: 0}
+  wallTop: {fileID: 0}
+  wallBottom: {fileID: 0}
+  wallLeft: {fileID: 0}
+  wallRight: {fileID: 0}
+  cornerTopLeft: {fileID: 0}
+  cornerTopRight: {fileID: 0}
+  cornerBottomLeft: {fileID: 0}
+  cornerBottomRight: {fileID: 0}
   obstacleTile: {fileID: 11400000, guid: cc3aac7cf3a7842498c9b5dc9e8ac510, type: 2}
   enemySpawnerPrefab: {fileID: 8096474091067682098, guid: cf6fcd68460121a49a2333d8e98237bb, type: 3}
   distanceFromWall: 1
@@ -2013,7 +2071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1951289655
 Transform:
   m_ObjectHideFlags: 0
@@ -2044,9 +2102,9 @@ MonoBehaviour:
   m_ComponentVersion: 2
   m_LightType: 1
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 0.272
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 2.73
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -2065,8 +2123,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.0431, y: 0.30085003, z: 0}
-    m_Extent: {x: 1.286, y: 1.79945, z: 0}
+    m_Center: {x: -0.002300024, y: 1.6457, z: 0}
+    m_Extent: {x: 1.7161, y: 3.2554998, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -2074,13 +2132,14 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 1
+  m_ShapeLightFalloffSize: 1.45
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
-  - {x: -0.24321651, y: -0.35667896, z: 0}
-  - {x: 0.32980633, y: -0.5, z: 0}
-  - {x: 0.29397583, y: 0.3536931, z: 0}
-  - {x: -0.058093548, y: 1.100157, z: 0}
+  - {x: -0.26959324, y: -0.15885317, z: 0}
+  - {x: 0.26386404, y: -0.15710175, z: 0}
+  - {x: 0.24122238, y: 1.2702866, z: 0}
+  - {x: 0.04012108, y: 3.4510455, z: 0}
+  - {x: -0.18338251, y: 0.9155194, z: 0}
 --- !u!1 &2068935146
 GameObject:
   m_ObjectHideFlags: 0
@@ -5337,3 +5396,4 @@ SceneRoots:
   - {fileID: 944709971}
   - {fileID: 1634027238}
   - {fileID: 2131655070}
+  - {fileID: 179694306}

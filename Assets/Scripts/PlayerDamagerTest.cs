@@ -8,7 +8,7 @@ public class PlayerDamagerTest : MonoBehaviour
     {
         if (collider.TryGetComponent(out Player player))
         {
-            player.TakeDamage(damageAmount);
+            player.TakeDamage(damageAmount, Vector2.zero);
         }
     }
     private void OnTriggerEnter2D(Collider2D collider)
